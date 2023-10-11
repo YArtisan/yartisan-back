@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { connect } from 'mongoose';
-import config from './env.json'
+import config from './env.json' assert { type: "json" };
 
 const app = express();
 

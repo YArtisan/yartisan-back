@@ -2,7 +2,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "esnext",
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
