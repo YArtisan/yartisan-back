@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-let prospect_command = new mongoose.Schema({
+let prospectCommandSchema = new mongoose.Schema({
     _id: {
         type: String,
         default: uuidv4,
@@ -23,11 +23,11 @@ let prospect_command = new mongoose.Schema({
         type: uuidv4,
         require: true
     },
-    createdAt: {
-        type: Date,
-        require: true,
-        default: Date.now()
+    default: function() {
+        const date = new Date();
+        date.setUTCHours(date.getUTCHours() + 2);
+        return date;
     }
 })
 
-export default mongoose.model('prospect_command', prospect_command);
+export default mongoose.model('prospect_command', prospectCommandSchema);

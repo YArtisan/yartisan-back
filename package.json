@@ -27,14 +27,9 @@
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-<<<<<<< HEAD
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.5"
-=======
-    "uuid": "^9.0.1",
-    "uuidv4": "^6.2.13"
->>>>>>> 4bce35d4b3bd09535a2493fbd6a71a6105623d67
   }
 }

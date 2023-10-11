@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-let command = new mongoose.Schema({
+let commandSchema = new mongoose.Schema({
     _id: {
         type: String,
         default: uuidv4,
@@ -38,4 +38,4 @@ let command = new mongoose.Schema({
     }
 })
 
-export default mongoose.model('command', command);
+export default mongoose.model('command', commandSchema);
