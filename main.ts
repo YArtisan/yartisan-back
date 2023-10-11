@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { connect } from 'mongoose';
 import config from './env.json' assert { type: "json" };
+import loginRoute from './routes/login.route';
 
 const app = express();
 
@@ -26,9 +27,7 @@ connect(config.mongoDb_url, {
 // Start the server
 app.listen(3000, () => console.log('Server started on port 3000'));
 
-// Register new members (/register)
-app.post('/register', jsonMiddleware, (req, res) => {
-});
+loginRoute(app);
 
 // Export the Express API
 export default app;
