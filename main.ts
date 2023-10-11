@@ -1,5 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { connect } from 'mongoose';
+import config from './env.json'
 
 const app = express();
 
@@ -14,19 +16,18 @@ app.use((req, res, next) => {
 	next();
 });
 
+// Connect to mongoDb
+connect(config.mongoDb_url, {
+		maxPoolSize: 10,
+	})
+	.then(() => console.log('Connected to MongoDB'))
+	.catch((err) => console.error('Failed to connect to MongoDB', err));
+
 // Start the server
 app.listen(3000, () => console.log('Server started on port 3000'));
 
 // Register new members (/register)
 app.post('/register', jsonMiddleware, (req, res) => {
-	// const emailAccount = req.body.email_account;
-	// const emailEmployee = req.body.email_employee;
-	// const firstNameEmployee = req.body.first_name;
-	// const lastNameEmployee = req.body.last_name;
-	// const passwordEmployee = req.body.password;
-
-	// console.log(emailAccount, emailEmployee, firstNameEmployee, lastNameEmployee, passwordEmployee);
-
 });
 
 // Export the Express API
