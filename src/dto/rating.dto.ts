@@ -5,4 +5,12 @@ interface RatingDto {
   avis: String
 }
 
-export {RatingDto};
+interface GetAllRatingUserDto {
+  user_id: String
+}
+
+interface GetAllArtisantRatingDto {
+  artisant_id: String
+}
+
+export {RatingDto, GetAllRatingUserDto, GetAllArtisantRatingDto};
