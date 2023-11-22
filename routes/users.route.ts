@@ -1,10 +1,19 @@
 import express, { request } from "express";
-import createUserController from "../src/controller/user.controller"
+import userController from "../src/controller/user.controller"
 
 export default function(app: any) {
   const jsonMiddleware = express.json();
   
-  app.post('/createUsers', jsonMiddleware, (req, res) => {
-    createUserController(req, res)
+  app.post('/create-users', jsonMiddleware, (req: any, res: any) => {
+    userController.createUserController(req, res)
+  });
+  app.post('/update-user', jsonMiddleware, (req: any, res: any) => {
+    userController.updateUserController(req, res)
+  });
+  app.post('/deleteUser' , jsonMiddleware, (req: any, res: any) => {
+    userController.deleteUserController(req, res)
+  });
+  app.post('/getUserData' , jsonMiddleware, (req: any, res: any) => {
+    userController.getUserDataController(req, res)
   });
 }

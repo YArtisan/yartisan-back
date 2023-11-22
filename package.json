@@ -1,8 +1,8 @@
 {
-  "name": "grammifyback",
+  "name": "yartisant-back",
   "version": "1.0.0",
-  "description": "API Grammify",
-  "main": "main.js",
+  "description": "API yartisant",
+  "main": "main.ts",
   "type": "module",
   "scripts": {
     "dev": "nodemon main.ts",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thomasperge/grammifyBack.git"
+    "url": "git+https://github.com/YArtisan/yartisan-back.git"
   },
   "author": "ElThomasDev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thomasperge/grammifyBack/issues"
+    "url": "https://github.com/YArtisan/yartisan-back/issues"
   },
-  "homepage": "https://github.com/thomasperge/grammifyBack#readme",
+  "homepage": "https://github.com/YArtisan/yartisan-back/tree/users#readme",
   "dependencies": {
     "@types/express": "^4.17.18",
     "bcrypt": "^5.1.1",
