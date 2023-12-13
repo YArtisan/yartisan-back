@@ -1,7 +1,7 @@
 import usersSchema from "../models/users.model";
-import { createUserdto } from "../dto/users.dto";
+import { usersDto } from "../dto/users.dto";
 
-async function createUserService(request: createUserdto, res: any): Promise<void> {
+async function createUserService(request: usersDto, res: any): Promise<void> {
   const emailFound = await usersSchema.findOne({ email: request.email });
 
   if (emailFound) {
@@ -15,8 +15,6 @@ async function createUserService(request: createUserdto, res: any): Promise<void
       address_id: request.address_id,
       profile_picture: request.profile_picture,
       is_artisant: request.is_artisant,
-      created_at: request.created_at,
-      last_update: request.last_update,
     });
 
     newUser.save();
@@ -25,10 +23,8 @@ async function createUserService(request: createUserdto, res: any): Promise<void
   }
 }
 
-async function updateUserService(request: any, res: any): Promise<void> {
+async function updateUserService(request: usersDto, res: any): Promise<void> {
   try {
-    const userId = request.userId;
-
     const updatedData = {
       firstname: request.firstname,
       lastname: request.lastname,
@@ -37,11 +33,9 @@ async function updateUserService(request: any, res: any): Promise<void> {
       address_id: request.address_id,
       profile_picture: request.profile_picture,
       is_artisant: request.is_artisant,
-      created_at: request.created_at,
-      last_update: request.last_update,
     };
 
-    await usersSchema.updateOne({ id: userId }, updatedData);
+    await usersSchema.updateOne({ id: request.user_id }, updatedData);
 
     res.status(200).json("User updated successfully");
   } catch (error) {
@@ -49,9 +43,9 @@ async function updateUserService(request: any, res: any): Promise<void> {
   }
 }
 
-async function deleteUserService(request: any, res: any): Promise<void> {
+async function deleteUserService(request: usersDto, res: any): Promise<void> {
   try {
-    const userId = request.userId;
+    const userId = request.user_id;
 
     // Delete the user
     await usersSchema.deleteOne({ id: userId });
@@ -62,9 +56,9 @@ async function deleteUserService(request: any, res: any): Promise<void> {
   }
 }
 
-async function getUserDataService(request: any, res: any): Promise<void> {
+async function getUserDataService(request: usersDto, res: any): Promise<void> {
   try {
-    const userId = request.userId;
+    const userId = request.user_id;
 
     const userData = await usersSchema.findOne({ id: userId });
 

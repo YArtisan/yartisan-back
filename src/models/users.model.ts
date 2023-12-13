@@ -25,7 +25,7 @@ let usersSchema = new mongoose.Schema(
       required: true,
     },
     address_id: {
-      type: Number,
+      type: String,
       default: null,
       required: true,
     },
