@@ -1,5 +1,5 @@
 import express from "express";
-import artisantController from "../src/controller/artisant.controller";
+import artisantController from "../controller/artisant.controller"
 
 export default function (app: any) {
   const jsonMiddleware = express.json();

@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { connect } from 'mongoose';
 import config from './env.json' assert { type: "json" };
-import userRoute from './routes/users.route';
+import userRoute from './src/routes/users.route';
 
 const app = express();
 

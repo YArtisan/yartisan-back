@@ -1,5 +1,5 @@
 import express, { request } from "express";
-import userController from "../src/controller/user.controller"
+import userController from "../controller/user.controller"
 
 export default function(app: any) {
   const jsonMiddleware = express.json();

@@ -1,4 +1,4 @@
-import usersSchema from "./../../models/users.model";
+import usersSchema from "../models/users.model";
 import { createUserdto } from "../dto/users.dto";
 
 async function createUserService(request: createUserdto, res: any): Promise<void> {
