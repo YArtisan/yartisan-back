@@ -1,8 +1,8 @@
 import artisanSchema from "../models/artisant.model";
-import { createArtisantdto } from "../dto/artisant.dto";
+import { ArtisanDto } from "../dto/artisant.dto";
 
 async function createArtisantService(
-  request: createArtisantdto,
+  request: ArtisanDto,
   res: any
 ): Promise<void> {
   const compagny_namefound = await artisanSchema.findOne({
