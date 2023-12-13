@@ -1,28 +1,28 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-let adressSchema = new mongoose.Schema({
+let ratingSchema = new mongoose.Schema({
   _id: {
     type: String,
     default: uuidv4,
     primary: true,
   },
-  adress_number: {
+  user_id: {
+    type: String,
+    primary: true,
+  },
+  artisant_id: {
     type: String,
     required: true
   },
-  city: {
+  score: {
     type: String,
     required: true
   },
-  street_name: {
+  avis: {
     type: String,
     required: true
   },
-  country: {
-    type: String,
-    required: true
-  },
-})
+}, {timestamps: true});
 
-export default mongoose.model('adress', adressSchema);
+export default mongoose.model('rating', ratingSchema);

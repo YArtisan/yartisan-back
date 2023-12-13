@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import { connect } from 'mongoose';
 import config from './env.json' assert { type: "json" };
 import userRoute from './routes/users.route';
+import ratingRoute from './routes/rating.route';
 
 const app = express();
 
@@ -28,6 +29,7 @@ connect(config.mongoDb_url, {
 app.listen(3000, () => console.log('Server started on port 3000'));
 
 userRoute(app);
+ratingRoute(app);
 
 // Export the Express API
 export default app;
