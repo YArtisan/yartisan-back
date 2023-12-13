@@ -35,6 +35,7 @@ let artisanSchema = new mongoose.Schema(
     average_price: {
       type: Number,
       required: true,
+      default:0,
     }
     
   },
