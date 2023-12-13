@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { connect } from 'mongoose';
 import config from './env.json' assert { type: "json" };
-import userRoute from './routes/users.route';
+import userRoute from './routes/users.route.js';
 import ratingRoute from './routes/rating.route';
 
 const app = express();
@@ -20,8 +20,8 @@ app.use((req, res, next) => {
 
 // Connect to mongoDb
 connect(config.mongoDb_url, {
-		maxPoolSize: 10,
-	})
+	maxPoolSize: 10,
+})
 	.then(() => console.log('Connected to MongoDB'))
 	.catch((err) => console.error('Failed to connect to MongoDB', err));
 

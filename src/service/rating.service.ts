@@ -1,5 +1,5 @@
-import ratingSchema from "./../../models/rating.model";
-import usersSchema from "../../models/users.model";
+import ratingSchema from "../models/rating.model";
+import usersSchema from "../models/users.model";
 import { RatingDto } from "./../dto/rating.dto";
 import { GetAllRatingUserDto } from "./../dto/rating.dto";
 import { GetAllArtisantRatingDto } from "./../dto/rating.dto";

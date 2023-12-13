@@ -11,7 +11,7 @@
   "include": [
     "src/**/*",
     "main.ts"
-  ],
+, "routes", "src/models", "routes"  ],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"

@@ -1,4 +1,4 @@
-import usersSchema from "./../../models/users.model";
+import usersSchema from "../models/users.model";
 import { createUserdto } from "../dto/users.dto";
 
 async function createUserService(request: createUserdto, res: any): Promise<void> {
@@ -8,15 +8,15 @@ async function createUserService(request: createUserdto, res: any): Promise<void
     res.status(400).json("Error...");
   } else {
     const newUser = new usersSchema({
-      firstname : request.firstname,
-      lastname : request.lastname,
-      password : request.password,
-      email : request.email,
-      address_id : request.address_id,
-      profile_picture : request.profile_picture,
-      is_artisant : request.is_artisant,
-      created_at : request.created_at,
-      last_update : request.last_update,
+      firstname: request.firstname,
+      lastname: request.lastname,
+      password: request.password,
+      email: request.email,
+      address_id: request.address_id,
+      profile_picture: request.profile_picture,
+      is_artisant: request.is_artisant,
+      created_at: request.created_at,
+      last_update: request.last_update,
     });
 
     newUser.save();
@@ -30,15 +30,15 @@ async function updateUserService(request: any, res: any): Promise<void> {
     const userId = request.userId;
 
     const updatedData = {
-      firstname : request.firstname,
-      lastname : request.lastname,
-      password : request.password,
-      email : request.email,
-      address_id : request.address_id,
-      profile_picture : request.profile_picture,
-      is_artisant : request.is_artisant,
-      created_at : request.created_at,
-      last_update : request.last_update,
+      firstname: request.firstname,
+      lastname: request.lastname,
+      password: request.password,
+      email: request.email,
+      address_id: request.address_id,
+      profile_picture: request.profile_picture,
+      is_artisant: request.is_artisant,
+      created_at: request.created_at,
+      last_update: request.last_update,
     };
 
     await usersSchema.updateOne({ id: userId }, updatedData);
@@ -79,4 +79,4 @@ async function getUserDataService(request: any, res: any): Promise<void> {
   }
 }
 
-export default {createUserService, updateUserService, getUserDataService, deleteUserService};
+export default { createUserService, updateUserService, getUserDataService, deleteUserService };

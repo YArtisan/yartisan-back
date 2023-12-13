@@ -1,4 +1,4 @@
-import artisanSchema from "./../../models/artisant.model";
+import artisanSchema from "../models/artisant.model";
 import { createArtisantdto } from "../dto/artisant.dto";
 
 async function createArtisantService(
