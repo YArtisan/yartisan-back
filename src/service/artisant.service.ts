@@ -1,5 +1,5 @@
-import artisanSchema from "./../models/artisant.model";
-import { artisantDto } from './../dto/artisant.dto'
+import artisanSchema from "./../models/artisant.model.js";
+import { artisantDto } from './../dto/artisant.dto.js'
 
 async function createArtisantService(request: artisantDto, res: any): Promise<void> {
   const emailFound = await artisanSchema.findOne({

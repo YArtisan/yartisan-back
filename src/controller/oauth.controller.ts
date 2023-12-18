@@ -1,4 +1,4 @@
-import artisantService from "../service/artisant.service";
+import artisantService from "../service/artisant.service.js";
 
 function signinUserController(request: any, res: any) {
   artisantService.createArtisantService(request.body, res);

@@ -1,4 +1,4 @@
-import ratingService from "../service/rating.service"
+import ratingService from "../service/rating.service.js"
 
 function createRatingServiceController(request: any, res: any) {
 	ratingService.createRatingService(request.body, res)

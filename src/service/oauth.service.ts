@@ -1,6 +1,6 @@
-import artisanSchema from "./../models/artisant.model";
-import userSchema from './../models/users.model'
-import { artisantDto } from './../dto/artisant.dto'
+import artisanSchema from "./../models/artisant.model.js";
+import userSchema from './../models/users.model.js'
+import { artisantDto } from './../dto/artisant.dto.js'
 
 async function signinArtisantService(request: artisantDto, res: any): Promise<void> {
   const artisantFound = await artisanSchema.findOne({

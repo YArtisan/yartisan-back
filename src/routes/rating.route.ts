@@ -1,5 +1,5 @@
 import express, { request } from "express";
-import ratingController from "./../controller/rating.controller";
+import ratingController from "./../controller/rating.controller.js";
 
 export default function (app: any) {
   const jsonMiddleware = express.json();

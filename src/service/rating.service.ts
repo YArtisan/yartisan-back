@@ -1,6 +1,6 @@
-import ratingSchema from "../models/rating.model";
-import usersSchema from "../models/users.model";
-import { ratingDto } from "./../dto/rating.dto";
+import ratingSchema from "../models/rating.model.js";
+import usersSchema from "../models/users.model.js";
+import { ratingDto } from "./../dto/rating.dto.js";
 import express, { Request, Response } from "express";
 
 async function createRatingService(request: ratingDto, res: Response) {

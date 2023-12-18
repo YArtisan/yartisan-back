@@ -1,4 +1,4 @@
-import userService from "../service/user.service"
+import userService from "../service/user.service.js"
 
 function createUserController(request: any, res: any) {
 	userService.createUserService(request.body, res)

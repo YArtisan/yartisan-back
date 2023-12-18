@@ -1,5 +1,5 @@
-import usersSchema from "../models/users.model";
-import { usersDto } from "../dto/users.dto";
+import usersSchema from "../models/users.model.js";
+import { usersDto } from "../dto/users.dto.js";
 
 async function createUserService(request: usersDto, res: any): Promise<void> {
   const emailFound = await usersSchema.findOne({ email: request.email });

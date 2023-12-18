@@ -1,9 +1,9 @@
 import express from "express";
 import { connect } from "mongoose";
 import config from "./env.json" assert { type: "json" };
-import userRoute from "./src/routes/users.route";
-import ratingRoute from "./src/routes/rating.route";
-import artisantRoute from "./src/routes/artisant.route";
+import userRoute from "./src/routes/users.route.js";
+import ratingRoute from "./src/routes/rating.route.js";
+import artisantRoute from "./src/routes/artisant.route.js";
 
 const app = express();
 
