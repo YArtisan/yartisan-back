@@ -37,8 +37,8 @@ async function updateUserService(request: usersDto, res: any): Promise<void> {
     await usersSchema.updateOne({ id: request.user_id }, updatedData);
 
     res.status(200).json({ status: true, message: "User updated successfully" });
-  } catch (error) {
-    res.status(404).json({ status: false, message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
   }
 }
 
@@ -49,8 +49,8 @@ async function deleteUserService(request: usersDto, res: any): Promise<void> {
     await usersSchema.deleteOne({ id: userId });
 
     res.status(200).json({ status: true, message: "User deleted successfully" });
-  } catch (error) {
-    res.status(404).json({ status: false, message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
   }
 }
 
@@ -66,7 +66,7 @@ async function getUserDataService(request: usersDto, res: any): Promise<void> {
     }
 
     res.status(200).json({ status: true, data: userData });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ status: false, message: error.message });
   }
 }

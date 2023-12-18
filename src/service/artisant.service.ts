@@ -53,8 +53,8 @@ async function updateArtisantService(request: artisantDto, res: any): Promise<vo
     } else {
       res.status(400).json({ status: false, message: "This artisant does not exist" });
     }
-  } catch (error) {
-    res.status(400).json({ status: false, message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
   }
 }
 
@@ -77,8 +77,8 @@ async function deleteArtisantService(request: artisantDto, res: any): Promise<vo
     }
 
     res.status(200).json({ status: true, message: "Artisan delete with sucess" });
-  } catch (error) {
-    res.status(400).json({ status: false, message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
   }
 }
 
@@ -92,8 +92,8 @@ async function getArtisantDataService(request: artisantDto, res: any): Promise<v
     }
 
     res.status(200).json({ status: true, data: artisantData });
-  } catch (error) {
-    res.status(400).json({ status: false, message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
   }
 }
 
@@ -107,8 +107,8 @@ async function getAllArtisansDataService(res: any): Promise<void> {
     }
 
     res.status(200).json({ status: true, data: artisanData });
-  } catch (error) {
-    res.status(400).json({ status: false, message: error.message });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
   }
 }
 

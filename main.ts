@@ -1,11 +1,12 @@
 import express from "express";
 import { connect } from "mongoose";
-import config from "./env.json" assert { type: "json" };
 import userRoute from "./src/routes/users.route.js";
 import ratingRoute from "./src/routes/rating.route.js";
 import artisantRoute from "./src/routes/artisant.route.js";
+import { config } from "dotenv";
 
 const app = express();
+config();
 
 // Ajouter des en-têtes CORS à toutes les requêtes
 app.use((req, res, next) => {
@@ -18,8 +19,14 @@ app.use((req, res, next) => {
 	next();
 });
 
+const mongo_uri = process.env.MONGODB_URL;
+
+if (!mongo_uri) {
+	throw new Error("La variable d'environnement MONGODB_URL n'est pas définie.");
+}
+
 // Connect to mongoDb
-connect(config.mongoDb_url, {
+connect(mongo_uri, {
 	maxPoolSize: 10,
 })
 	.then(() => console.log("Connected to MongoDB"))
