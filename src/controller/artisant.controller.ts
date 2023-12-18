@@ -16,9 +16,14 @@ function getArtisantDataController(request: any, res: any) {
 	artisantService.getArtisantDataService(request.body, res);
 }
 
+function getAllArtisansDataController(request: any, res: any) {
+	artisantService.getArtisantDataService(request.body, res)
+}
+
 export default {
 	createArtisantController,
 	updateArtisantController,
 	deleteArtisantController,
 	getArtisantDataController,
+	getAllArtisansDataController
 };

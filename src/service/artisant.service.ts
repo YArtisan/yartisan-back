@@ -2,16 +2,16 @@ import artisanSchema from "./../models/artisant.model";
 import { artisantDto } from './../dto/artisant.dto'
 
 async function createArtisantService(request: artisantDto, res: any): Promise<void> {
+  const emailFound = await artisanSchema.findOne({
+    email: request.email,
+  });
+
   const compagnyNameFound = await artisanSchema.findOne({
     compagny_name: request.compagny_name,
   });
 
-  const profilePictureFound = await artisanSchema.findOne({
-    profile_picture: request.profile_picture,
-  });
-
-  if (compagnyNameFound || profilePictureFound) {
-    res.status(400).json("Error...");
+  if (emailFound || compagnyNameFound) {
+    res.status(400).json({ status: false, message: "This account already exists" });
   } else {
     const newArtisant = new artisanSchema({
       compagny_name: request.compagny_name,
@@ -22,7 +22,7 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     });
 
     newArtisant.save();
-    res.status(200).json("Save into Db !");
+    res.status(200).json({ status: true, message: "Artisant successfully creates" });
   }
 }
 
@@ -33,7 +33,7 @@ async function updateArtisantService(request: artisantDto, res: any): Promise<vo
     });
 
     if (!request.artisant_id) {
-      res.status(400).json("Missing artisant id");
+      res.status(400).json({ status: false, message: "Artisan id is undefined" });
       return
     }
 
@@ -49,19 +49,19 @@ async function updateArtisantService(request: artisantDto, res: any): Promise<vo
       };
 
       await artisanSchema.findOneAndUpdate({ _id: request.artisant_id }, updatedData);
-      res.status(200).json("Artisant updated successfully");
+      res.status(200).json({ status: true, message: "Artisan successfully updated" });
     } else {
-      res.status(200).json("This artisant does not exist");
+      res.status(400).json({ status: false, message: "This artisant does not exist" });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ status: false, message: error.message });
   }
 }
 
 async function deleteArtisantService(request: artisantDto, res: any): Promise<void> {
   try {
     if (!request.artisant_id) {
-      res.status(400).json("Missing artisant id");
+      res.status(400).json({ status: false, message: "Artisan id is undefined" });
       return
     }
 
@@ -72,13 +72,13 @@ async function deleteArtisantService(request: artisantDto, res: any): Promise<vo
     if (artistantFound) {
       await artisanSchema.deleteOne({ _id: request.artisant_id });
     } else {
-      res.status(400).json("Artisant does not exist");
+      res.status(400).json({ status: false, message: "Artisant does not exist" });
       return
     }
 
-    res.status(200).json("Artisan delete with sucess");
+    res.status(200).json({ status: true, message: "Artisan delete with sucess" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ status: false, message: error.message });
   }
 }
 
@@ -87,13 +87,28 @@ async function getArtisantDataService(request: artisantDto, res: any): Promise<v
     const artisantData = await artisanSchema.findOne({ _id: request.artisant_id });
 
     if (!artisantData) {
-      res.status(404).json("Artisan non trouvé");
+      res.status(400).json({ status: false, message: "Artisant not found" });
       return;
     }
 
-    res.status(200).json(artisantData);
+    res.status(200).json({ status: true, data: artisantData });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ status: false, message: error.message });
+  }
+}
+
+async function getAllArtisansDataService(res: any): Promise<void> {
+  try {
+    const artisanData = await artisanSchema.find({});
+
+    if (!artisanData || artisanData.length === 0) {
+      res.status(400).json({ status: false, message: "No artisans found" });
+      return;
+    }
+
+    res.status(200).json({ status: true, data: artisanData });
+  } catch (error) {
+    res.status(400).json({ status: false, message: error.message });
   }
 }
 

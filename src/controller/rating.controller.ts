@@ -1,7 +1,7 @@
 import ratingService from "../service/rating.service"
 
-function ratingServiceController(request: any, res: any) {
-	ratingService.setRatingService(request.body, res)
+function createRatingServiceController(request: any, res: any) {
+	ratingService.createRatingService(request.body, res)
 }
 
 function getAllUserRatingController(request: any, res: any) {
@@ -12,4 +12,4 @@ function getAllArtisantRatingController(request: any, res: any) {
 	ratingService.getAllArtisantRating(request.body, res)
 }
 
-export default { ratingServiceController, getAllUserRatingController, getAllArtisantRatingController }
+export default { createRatingServiceController, getAllUserRatingController, getAllArtisantRatingController }

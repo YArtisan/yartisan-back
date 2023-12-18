@@ -8,9 +8,13 @@ let artisanSchema = new mongoose.Schema(
 			default: uuidv4,
 			primary: true,
 		},
-    user_id: {
+    email: {
       type: String,
-      requires: true
+      required: true
+    },
+		password: {
+      type: String,
+      required: true
     },
 		compagny_name: {
 			type: String,

@@ -1,5 +1,7 @@
 interface artisantDto {
   artisant_id?: string
+  email?: string
+  password?: string
   firstname?: string
   lastname?: string
   compagny_name?: string
