@@ -34,7 +34,8 @@ let artisanSchema = new mongoose.Schema(
 		},
 		number_of_employees: {
 			type: Number,
-			required: true,
+			default: 1,
+			required: false,
 		},
 		isVisible: {
 			type: Boolean,

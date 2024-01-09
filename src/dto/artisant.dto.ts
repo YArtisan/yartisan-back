@@ -11,6 +11,13 @@ interface artisantDto {
   average_price?: Number
   number_of_employees?: Number
   isVisible?: Boolean
+  opening_hours?: openingHoursDto[]
+}
+
+interface openingHoursDto {
+  day_of_week: string
+  opening_time: string
+  closing_time: string
 }
 
 export { artisantDto }
