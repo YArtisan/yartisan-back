@@ -54,9 +54,9 @@ async function deleteUserService(request: usersDto, res: any): Promise<void> {
   }
 }
 
-async function getUserDataService(request: usersDto, res: any): Promise<void> {
+async function getUserDataService(id: string, res: any): Promise<void> {
   try {
-    const userId = request.user_id;
+    const userId = id;
 
     const userData = await usersSchema.findOne({ id: userId });
 
