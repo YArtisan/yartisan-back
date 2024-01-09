@@ -17,7 +17,7 @@ function getArtisantDataController(request: any, res: any) {
 }
 
 function getAllArtisansDataController(request: any, res: any) {
-	artisantService.getArtisantDataService(request.body, res)
+	artisantService.getAllArtisansDataService(res)
 }
 
 export default {
