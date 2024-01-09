@@ -113,7 +113,7 @@ async function getArtisantDataService(request: artisantDto, res: any): Promise<v
       return;
     }
 
-    const data = {artisantData, artisantOpeningTime}
+    const data = { artisantData, artisantOpeningTime }
 
     res.status(200).json({ status: true, data: data });
   } catch (error: any) {
@@ -130,7 +130,18 @@ async function getAllArtisansDataService(res: any): Promise<void> {
       return;
     }
 
-    res.status(200).json({ status: true, data: artisanData });
+    // Récupérer les données des horaires d'ouverture pour chaque artisan
+    const artisansWithOpeningHours = await Promise.all(
+      artisanData.map(async (artisan) => {
+        const openingHours = await openingHoursModelSchema.find({ artisant_id: artisan._id });
+        return {
+          artisantData: artisan,
+          artisantOpeningTime: openingHours,
+        };
+      })
+    );
+
+    res.status(200).json({ status: true, data: artisansWithOpeningHours });
   } catch (error: any) {
     res.status(500).json({ status: false, message: error.message });
   }
