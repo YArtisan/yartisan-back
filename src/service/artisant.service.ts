@@ -1,4 +1,5 @@
 import artisanSchema from "./../models/artisant.model.js";
+import openingHoursModelSchema from "../models/opening_hours.model.js";
 import { artisantDto } from './../dto/artisant.dto.js'
 
 async function createArtisantService(request: artisantDto, res: any): Promise<void> {
@@ -14,6 +15,8 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     res.status(400).json({ status: false, message: "This account already exists" });
   } else {
     const newArtisant = new artisanSchema({
+      email: request.email,
+      password: request.password,
       compagny_name: request.compagny_name,
       phone_number: request.phone_number,
       profile_picture: request.profile_picture,
@@ -22,7 +25,25 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     });
 
     newArtisant.save();
-    res.status(200).json({ status: true, message: "Artisant successfully creates" });
+
+    if (request.opening_hours && request.opening_hours.length > 0) {
+      for (const day of request.opening_hours) {
+        const newOpeningHoursModel = new openingHoursModelSchema({
+          artisant_id: newArtisant._id,
+          day_of_week: day.day_of_week,
+          opening_time: day.opening_time,
+          closing_time: day.closing_time
+        });
+
+        newOpeningHoursModel.save()
+      }
+    }
+
+    if (newArtisant) {
+      res.status(200).json({ status: true, message: "Artisant successfully creates" });
+    } else {
+      res.status(400).json({ status: false, message: "Cannot creates this artisant" });
+    }
   }
 }
 
@@ -85,13 +106,16 @@ async function deleteArtisantService(request: artisantDto, res: any): Promise<vo
 async function getArtisantDataService(request: artisantDto, res: any): Promise<void> {
   try {
     const artisantData = await artisanSchema.findOne({ _id: request.artisant_id });
+    const artisantOpeningTime = await openingHoursModelSchema.find({ artisant_id: request.artisant_id })
 
     if (!artisantData) {
       res.status(400).json({ status: false, message: "Artisant not found" });
       return;
     }
 
-    res.status(200).json({ status: true, data: artisantData });
+    const data = {artisantData, artisantOpeningTime}
+
+    res.status(200).json({ status: true, data: data });
   } catch (error: any) {
     res.status(500).json({ status: false, message: error.message });
   }
