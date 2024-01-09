@@ -20,7 +20,7 @@ export default function (app: any) {
     artisantController.getArtisantDataController(req, res);
   });
 
-  app.post("/artisant/get-all-artisant", jsonMiddleware, (req: any, res: any) => {
+  app.get("/artisant/get-all-artisant", jsonMiddleware, (req: any, res: any) => {
     artisantController.getAllArtisansDataController(req, res);
   });
 }

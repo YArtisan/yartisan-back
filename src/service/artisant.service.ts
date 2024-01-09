@@ -112,4 +112,4 @@ async function getAllArtisansDataService(res: any): Promise<void> {
   }
 }
 
-export default { createArtisantService, updateArtisantService, deleteArtisantService, getArtisantDataService };
+export default { createArtisantService, updateArtisantService, deleteArtisantService, getArtisantDataService, getAllArtisansDataService };
