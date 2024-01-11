@@ -18,7 +18,7 @@ async function createUserService(request: usersDto, res: any): Promise<void> {
     });
 
     newUser.save();
-    res.status(200).json({ status: true, message: "User added" });
+    res.status(200).json({ status: true, message: "User added", user: newUser });
   }
 }
 

@@ -5,12 +5,20 @@ import ratingRoute from "./src/routes/rating.route.js";
 import artisantRoute from "./src/routes/artisant.route.js";
 import { config } from "dotenv";
 import { authMiddleware } from "./src/middleware/middleware.js";
+import admin from  'firebase-admin'
+import serviceAccount  from './service-account.json' assert { type: "json" }
 
-const admin = require("firebase-admin");
-const serviceAccount = require("./service-account.json");
 
 const app = express();
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+});
+
+export const auth = admin.auth();
+
 config();
+
 
 // Ajouter des en-têtes CORS à toutes les requêtes
 app.use((req, res, next) => {
@@ -29,10 +37,6 @@ if (!mongo_uri) {
 	throw new Error("La variable d'environnement MONGODB_URL n'est pas définie.");
 }
 
-admin.initializeApp({
-	redential: admin.credential.cert(serviceAccount)
-});
-
 // Connect to mongoDb
 connect(mongo_uri, {
 	maxPoolSize: 10,
@@ -43,7 +47,7 @@ connect(mongo_uri, {
 app.use(authMiddleware);
 
 // Start the server
-app.listen(3000, () => console.log("Server started on port 3000"));
+app.listen(3001, () => console.log("Server started on port 3000"));
 
 userRoute(app);
 ratingRoute(app);
