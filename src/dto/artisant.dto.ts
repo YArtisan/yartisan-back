@@ -4,7 +4,7 @@ interface artisantDto {
   password?: string
   firstname?: string
   lastname?: string
-  compagny_name?: string
+  company_name?: string
   phone_number?: Number
   profile_picture?: string
   job_description?: string
@@ -12,12 +12,21 @@ interface artisantDto {
   number_of_employees?: Number
   isVisible?: Boolean
   opening_hours?: openingHoursDto[]
+  address?: addressDto
 }
 
 interface openingHoursDto {
   day_of_week: string
   opening_time: string
   closing_time: string
+}
+
+interface addressDto {
+  address_number: Number
+  city: string
+  street_name: string
+  postal_code: string
+  country: string
 }
 
 export { artisantDto }

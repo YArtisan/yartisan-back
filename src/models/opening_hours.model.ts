@@ -12,7 +12,7 @@ let favoriSchema = new mongoose.Schema({
     require: true
   },
   day_of_week: {
-    type: String,
+    type: Number,
     require: true
   },
   opening_time: {
