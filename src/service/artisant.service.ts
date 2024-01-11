@@ -1,5 +1,7 @@
 import artisanSchema from "./../models/artisant.model.js";
 import openingHoursModelSchema from "../models/opening_hours.model.js";
+import ratingSchema from "../models/rating.model.js";
+import addressSchema from "../models/address.model.js";
 import { artisantDto } from './../dto/artisant.dto.js'
 
 async function createArtisantService(request: artisantDto, res: any): Promise<void> {
@@ -7,17 +9,17 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     email: request.email,
   });
 
-  const compagnyNameFound = await artisanSchema.findOne({
-    compagny_name: request.compagny_name,
+  const companyNameFound = await artisanSchema.findOne({
+    company_name: request.company_name,
   });
 
-  if (emailFound || compagnyNameFound) {
+  if (emailFound || companyNameFound) {
     res.status(400).json({ status: false, message: "This account already exists" });
   } else {
     const newArtisant = new artisanSchema({
       email: request.email,
       password: request.password,
-      compagny_name: request.compagny_name,
+      company_name: request.company_name,
       phone_number: request.phone_number,
       profile_picture: request.profile_picture,
       job_description: request.job_description,
@@ -25,6 +27,17 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     });
 
     newArtisant.save();
+
+    const newAdress = new addressSchema({
+      id: newArtisant.adress_id,
+      address_number: request.address?.address_number,
+      city: request.address?.city,
+      street_name: request.address?.street_name,
+      postal_code: request.address?.postal_code,
+      country: request.address?.country,
+    });
+
+    newAdress.save()
 
     if (request.opening_hours && request.opening_hours.length > 0) {
       for (const day of request.opening_hours) {
@@ -60,7 +73,7 @@ async function updateArtisantService(request: artisantDto, res: any): Promise<vo
 
     if (artistantFound) {
       const updatedData = {
-        compagny_name: request.compagny_name,
+        company_name: request.company_name,
         phone_number: request.phone_number,
         profile_picture: request.profile_picture,
         job_description: request.job_description,
@@ -130,21 +143,27 @@ async function getAllArtisansDataService(res: any): Promise<void> {
       return;
     }
 
-    // Récupérer les données des horaires d'ouverture pour chaque artisan
-    const artisansWithOpeningHours = await Promise.all(
+    // Récupérer les données des horaires d'ouverture et des rating pour chaque artisan
+    const artisansWithOpeningAndRating = await Promise.all(
       artisanData.map(async (artisan) => {
         const openingHours = await openingHoursModelSchema.find({ artisant_id: artisan._id });
+        const rating = await ratingSchema.find({ artisant_id: artisan._id });
+        const address = await addressSchema.find({ _id: artisan.adress_id });
+
         return {
           artisantData: artisan,
-          artisantOpeningTime: openingHours,
+          opening_time: openingHours,
+          ratings: rating,
+          address: address
         };
       })
     );
 
-    res.status(200).json({ status: true, data: artisansWithOpeningHours });
+    res.status(200).json({ status: true, data: artisansWithOpeningAndRating });
   } catch (error: any) {
     res.status(500).json({ status: false, message: error.message });
   }
 }
+
 
 export default { createArtisantService, updateArtisantService, deleteArtisantService, getArtisantDataService, getAllArtisansDataService };
