@@ -32,4 +32,4 @@ let usersSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("users", usersSchema);
+export default mongoose.model("users", usersSchema)

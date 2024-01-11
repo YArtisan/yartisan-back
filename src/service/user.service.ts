@@ -2,12 +2,14 @@ import usersSchema from "../models/users.model.js";
 import { usersDto } from "../dto/users.dto.js";
 
 async function createUserService (request: usersDto, res: any): Promise<void> {
-  const emailFound = await usersSchema.findOne({ email: request.email });
+  await usersSchema.deleteOne({ email: request.email })
+  const emailFound = await usersSchema.findOne({ email: request.email })
 
   if (emailFound) {
-    res.status(400).json({ status: false, message: "This email already exist" });
+    res.status(400).json({ status: false, message: "This email already exist" })
   } else {
     const newUser = new usersSchema({
+      id: request.user_id,
       firstname: request.firstname,
       lastname: request.lastname,
       password: request.password,
