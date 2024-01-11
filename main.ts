@@ -3,11 +3,11 @@ import { connect } from "mongoose";
 import userRoute from "./src/routes/users.route.js";
 import ratingRoute from "./src/routes/rating.route.js";
 import artisantRoute from "./src/routes/artisant.route.js";
+import authenticationRoute from "./src/routes/oauth.route.js"
 import { config } from "dotenv";
 import { authMiddleware } from "./src/middleware/middleware.js";
-import admin from  'firebase-admin'
-import serviceAccount  from './service-account.json' assert { type: "json" }
-
+import admin from 'firebase-admin'
+import serviceAccount from './service-account.json' assert { type: "json" }
 
 const app = express();
 
@@ -18,7 +18,6 @@ admin.initializeApp({
 export const auth = admin.auth();
 
 config();
-
 
 // Ajouter des en-têtes CORS à toutes les requêtes
 app.use((req, res, next) => {
@@ -47,8 +46,9 @@ connect(mongo_uri, {
 app.use(authMiddleware);
 
 // Start the server
-app.listen(3001, () => console.log("Server started on port 3000"));
+app.listen(3000, () => console.log("Server started on port 3000"));
 
+authenticationRoute(app)
 userRoute(app);
 ratingRoute(app);
 artisantRoute(app);

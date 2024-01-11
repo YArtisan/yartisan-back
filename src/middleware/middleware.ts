@@ -1,20 +1,21 @@
 import { NextFunction } from 'express';
-import { Request, Response } from 'express'
-import userService from "../service/user.service.js"
+import { Response } from 'express'
+import usersSchema from "../models/users.model.js";
 import { auth } from '../../main.js';
 
-
-export const authMiddleware = async  (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const authMiddleware = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const authorization = req.headers.authorization ?? '';
     const idToken = authorization.split(' ')[1] ?? '';
-
-    const decodedToken = await auth.verifyIdToken(idToken);
-    
-    try {
-        const user = await userService.getUserDataService(decodedToken.uid, res);
-        res.status(200).send({user: user});
-
-    } catch (e) {
-        res.status(500).send({message: 'User non trouve'});
+    if (idToken == null || idToken === '') {
+        next();
+        return
     }
+    const decodedToken = await auth.verifyIdToken(idToken);
+    if (decodedToken.email_verified !== true) {
+        next();
+        return
+    }
+    const user = await usersSchema.findOne({ id: decodedToken.uid });
+    req.user = user;
+    next();
 }
