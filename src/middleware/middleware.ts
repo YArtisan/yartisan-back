@@ -6,16 +6,9 @@ import { auth } from '../../main.js';
 export const authMiddleware = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const authorization = req.headers.authorization ?? '';
     const idToken = authorization.split(' ')[1] ?? '';
-    if (idToken == null || idToken === '') {
-        next();
-        return
-    }
+    if (idToken == null || idToken === '') next();
     const decodedToken = await auth.verifyIdToken(idToken);
-    if (decodedToken.email_verified !== true) {
-        next();
-        return
-    }
-    const user = await usersSchema.findOne({ id: decodedToken.uid });
+    const user = await usersSchema.findOne({ email: decodedToken.email });
     req.user = user;
     next();
 }
