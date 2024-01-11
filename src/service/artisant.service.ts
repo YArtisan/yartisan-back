@@ -6,7 +6,6 @@ import { artisantDto } from './../dto/artisant.dto.js'
 
 async function createArtisantService(request: artisantDto, res: any): Promise<void> {
   try {
-
     const emailFound = await artisanSchema.findOne({
       email: request.email,
     });
@@ -30,7 +29,7 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
         average_price: request.average_price
       });
 
-      newArtisant.save();
+      await newArtisant.save();
 
       const newAdress = new addressSchema({
         id: newArtisant.adress_id,
@@ -43,7 +42,7 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
         lon: request.address?.lon,
       });
 
-      newAdress.save();
+      await newAdress.save();
 
       if (request.opening_hours && request.opening_hours.length > 0) {
         for (const day of request.opening_hours) {
@@ -54,7 +53,7 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
             closing_time: day.closing_time
           });
 
-          newOpeningHoursModel.save()
+          await newOpeningHoursModel.save()
         }
       }
 
@@ -67,7 +66,6 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
   } catch (err) {
     res.status(400).json({ status: false, message: err });
   }
-
 }
 
 async function updateArtisantService(request: artisantDto, res: any): Promise<void> {
