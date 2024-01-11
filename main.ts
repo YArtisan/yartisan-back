@@ -4,9 +4,21 @@ import userRoute from "./src/routes/users.route.js";
 import ratingRoute from "./src/routes/rating.route.js";
 import artisantRoute from "./src/routes/artisant.route.js";
 import { config } from "dotenv";
+import { authMiddleware } from "./src/middleware/middleware.js";
+import admin from  'firebase-admin'
+import serviceAccount  from './service-account.json' assert { type: "json" }
+
 
 const app = express();
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+});
+
+export const auth = admin.auth();
+
 config();
+
 
 // Ajouter des en-têtes CORS à toutes les requêtes
 app.use((req, res, next) => {
@@ -32,8 +44,10 @@ connect(mongo_uri, {
 	.then(() => console.log("Connected to MongoDB"))
 	.catch((err) => console.error("Failed to connect to MongoDB", err));
 
+app.use(authMiddleware);
+
 // Start the server
-app.listen(3000, () => console.log("Server started on port 3000"));
+app.listen(3001, () => console.log("Server started on port 3000"));
 
 userRoute(app);
 ratingRoute(app);
