@@ -27,6 +27,8 @@ interface addressDto {
   street_name: string
   postal_code: string
   country: string
+  lat: string
+  lon: string
 }
 
 export { artisantDto }
