@@ -27,6 +27,14 @@ let addressSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    lat: {
+      type: String,
+      required: false,
+    },
+    lon: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );
