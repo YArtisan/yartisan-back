@@ -16,25 +16,16 @@ let usersSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone_number: {
+      type: String,
+      required: true
+    },
     password: {
       type: String,
       required: true,
     },
     email: {
       type: String,
-      required: true,
-    },
-    address_id: {
-      type: String,
-      default: null,
-      required: true,
-    },
-    profile_picture: {
-      type: String,
-      required: false,
-    },
-    is_artisant: {
-      type: Boolean,
       required: true,
     },
   },

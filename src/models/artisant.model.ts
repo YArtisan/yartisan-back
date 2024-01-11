@@ -8,6 +8,11 @@ let artisanSchema = new mongoose.Schema(
 			default: uuidv4,
 			primary: true,
 		},
+		adress_id: {
+			type: String,
+			default: uuidv4,
+			primary: true,
+		},
     email: {
       type: String,
       required: true
@@ -16,7 +21,7 @@ let artisanSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-		compagny_name: {
+		company_name: {
 			type: String,
 			required: true,
 		},
@@ -34,7 +39,8 @@ let artisanSchema = new mongoose.Schema(
 		},
 		number_of_employees: {
 			type: Number,
-			required: true,
+			default: 1,
+			required: false,
 		},
 		isVisible: {
 			type: Boolean,

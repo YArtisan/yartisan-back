@@ -1,37 +1,37 @@
 import usersSchema from "../models/users.model.js";
 import { usersDto } from "../dto/users.dto.js";
 
-async function createUserService(request: usersDto, res: any): Promise<void> {
+async function createUserService (request: usersDto, res: any): Promise<void> {
   const emailFound = await usersSchema.findOne({ email: request.email });
 
   if (emailFound) {
-    res.status(400).json({ status: false, message: "This email doesn't exist" });
+    res.status(400).json({ status: false, message: "This email already exist" });
   } else {
     const newUser = new usersSchema({
       firstname: request.firstname,
       lastname: request.lastname,
       password: request.password,
       email: request.email,
-      address_id: request.address_id,
-      profile_picture: request.profile_picture,
-      is_artisant: request.is_artisant,
+      phone_number: request.phone_number
     });
 
     newUser.save();
-    res.status(200).json({ status: true, message: "User added", user: newUser });
+    if (newUser) {
+      res.status(200).json({ status: true, message: "User added" });
+    } else {
+      res.status(400).json({ status: false, message: "Cannot add this user" });
+    }
   }
 }
 
-async function updateUserService(request: usersDto, res: any): Promise<void> {
+async function updateUserService (request: usersDto, res: any): Promise<void> {
   try {
     const updatedData = {
       firstname: request.firstname,
       lastname: request.lastname,
       password: request.password,
       email: request.email,
-      address_id: request.address_id,
-      profile_picture: request.profile_picture,
-      is_artisant: request.is_artisant,
+      phone_number: request.phone_number,
     };
 
     await usersSchema.updateOne({ id: request.user_id }, updatedData);
@@ -42,7 +42,7 @@ async function updateUserService(request: usersDto, res: any): Promise<void> {
   }
 }
 
-async function deleteUserService(request: usersDto, res: any): Promise<void> {
+async function deleteUserService (request: usersDto, res: any): Promise<void> {
   try {
     const userId = request.user_id;
 
@@ -54,7 +54,7 @@ async function deleteUserService(request: usersDto, res: any): Promise<void> {
   }
 }
 
-async function getUserDataService(id: string, res: any): Promise<void> {
+async function getUserDataService (id: string, res: any): Promise<void> {
   try {
     const userId = id;
 
