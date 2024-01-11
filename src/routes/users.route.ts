@@ -1,4 +1,4 @@
-import express, { request } from "express";
+import express from "express";
 import userController from "./../controller/user.controller.js";
 
 export default function (app: any) {
@@ -19,4 +19,8 @@ export default function (app: any) {
 	app.post("/users/get-data", jsonMiddleware, (req: any, res: any) => {
 		userController.getUserDataController(req, res);
 	});
+
+	app.get('/user', jsonMiddleware, (req: any, res: any) => {
+		res.status(200).json({ status: true, data: req.user })
+	})
 }
