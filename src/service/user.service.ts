@@ -5,10 +5,9 @@ async function createUserService (request: usersDto, res: any): Promise<void> {
   const emailFound = await usersSchema.findOne({ email: request.email })
 
   if (emailFound) {
-    res.status(400).json({ status: false, message: "This email already exist" })
+    res.status(400).json({ status: false, message: "This email already exist" });
   } else {
     const newUser = new usersSchema({
-      id: request.user_id,
       firstname: request.firstname,
       lastname: request.lastname,
       password: request.password,
@@ -17,6 +16,7 @@ async function createUserService (request: usersDto, res: any): Promise<void> {
     });
 
     newUser.save();
+
     if (newUser) {
       res.status(200).json({ status: true, message: "User added" });
     } else {
@@ -55,9 +55,9 @@ async function deleteUserService (request: usersDto, res: any): Promise<void> {
   }
 }
 
-async function getUserDataService (id: string, res: any): Promise<void> {
+async function getUserDataService (request: usersDto, res: any): Promise<void> {
   try {
-    const userId = id;
+    const userId = request.user_id;
 
     const userData = await usersSchema.findOne({ id: userId });
 
