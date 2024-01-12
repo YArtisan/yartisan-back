@@ -3,7 +3,6 @@ import { usersDto } from "../dto/users.dto.js";
 
 async function createUserService (request: usersDto, res: any): Promise<void> {
   await usersSchema.deleteOne({ email: request.email })
-  throw new Error("sqdqsd");
 
   const emailFound = await usersSchema.findOne({ email: request.email })
 
