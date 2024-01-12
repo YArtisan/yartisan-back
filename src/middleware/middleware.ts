@@ -2,6 +2,7 @@ import { NextFunction } from 'express';
 import { Response } from 'express'
 import usersSchema from "../models/users.model.js";
 import { auth } from '../../main.js';
+import artisantModel from '../models/artisant.model.js';
 
 export const authMiddleware = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const authorization = req.headers.authorization ?? '';
@@ -11,7 +12,11 @@ export const authMiddleware = async (req: any, res: Response, next: NextFunction
         return
     }
     const decodedToken = await auth.verifyIdToken(idToken);
-    const user = await usersSchema.findOne({ email: decodedToken.email });
-    req.user = user;
+    const [user, artisan] = await Promise.all([
+        usersSchema.findOne({ email: decodedToken.email }),
+        artisantModel.findOne({ email: decodedToken.email })
+    ])
+    
+    req.user = user ?? artisan;
     next();
 }
