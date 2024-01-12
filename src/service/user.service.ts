@@ -18,7 +18,7 @@ async function createUserService (request: usersDto, res: any): Promise<void> {
       phone_number: request.phone_number
     });
 
-    newUser.save();
+    await newUser.save();
     if (newUser) {
       res.status(200).json({ status: true, message: "User added" });
     } else {

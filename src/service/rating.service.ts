@@ -14,7 +14,7 @@ async function createRatingService(request: ratingDto, res: Response) {
 			avis: request.avis,
 		});
 
-		newRating.save();
+		await newRating.save();
 
 		if (newRating) {
 			res.status(200).json({ status: true, message: "Rating send" });
