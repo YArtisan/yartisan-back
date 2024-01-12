@@ -8,10 +8,9 @@
 		"node": ">=18.18.0 <19.0.0"
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc&&cp ./service-account.json ./dist/service-account.json",
 		"start": "node ./dist/main.js",
-		"dev": "nodemon main.ts",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "nodemon main.ts"
 	},
 	"repository": {
 		"type": "git",
