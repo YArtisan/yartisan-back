@@ -1,74 +1,62 @@
 import LikeModel from "../models/like.model";
-import { CreateLikeDto, UpdateLikeDto } from "../dto/like.dto";
-import likeModel from "../models/like.model";
+import { LikeDto } from "../dto/like.dto";
 
-async function createLikeService(request: CreateLikeDto, res: any): Promise<void> {
-  try {
-    const newLike = new LikeModel({
-      userId: request.userId,
-      postId: request.postId,
-	    password : request.password,
-	    email : request.email,
-	    address_id : request.address_id,
-	    profile_picture : request.profile_picture,
-	    last_update : request.last_update
-    });
+class LikeService {
+  async createLike(likeDto: LikeDto, res: any): Promise<void> {
+    try {
+      const newLike = new LikeModel({
+        id: likeDto.id,
+        user_id: likeDto.user_id,
+        artisant_id: likeDto.artisant_id
+      });
 
-    await newLike.save();
+      await newLike.save();
 
-    res.status(200).json("Like saved into the database!");
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
-
-async function updateLikeService(request: UpdateLikeDto, res: any): Promise<void> {
-  try {
-    const likeId = request.likeId;
-
-    const updatedLike = {
-      userId: request.userId,
-      postId: request.postId,
-	    password : request.password,
-	    email : request.email,
-	    address_id : request.address_id,
-	    profile_picture : request.profile_picture,
-	    last_update : request.last_update
-
+      res.status(200).json({ message: "Like enregistré dans la base de données !" });
+    } catch (error) {
+      console.error("Erreur lors de la création du like :", error);
+      res.status(500).json({ error: "Une erreur s'est produite lors de l'enregistrement du like." });
     }
-
-    res.status(200).json("Like updated successfully");
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-}
 
-async function deleteLikeService(request: any, res: any): Promise<void> {
-  try {
-    const likeId = request.likeId;
+  async deleteLike(likeDto: LikeDto, res: any): Promise<void> {
+    try {
+      const likeId = likeDto.id;
 
-    await LikeModel.deleteOne({ id: likeId });
-    res.status(200).json("Like deleted successfully");
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
+      const result = await LikeModel.deleteOne({ id: likeId });
 
-async function getLikeDataService(request: any, res: any): Promise<void> {
-  try {
-    const likeId = request.likeId;
-
-    const getLikeData = await likeModel.findOne({ id: likeId });
-
-    if (!getLikeData) {
-      res.status(404).json("User not found");
-      return;
+      if (result.deletedCount === 1) {
+        res.status(200).json({ message: "Like supprimé avec succès" });
+      } else {
+        res.status(404).json({ error: "Like non trouvé" });
+      }
+    } catch (error) {
+      console.error("Erreur lors de la suppression du like :", error);
+      res.status(500).json({ error: "Une erreur s'est produite lors de la suppression du like." });
     }
+  }
 
-    res.status(200).json("Like data retrieved successfully");
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  async getLikesByUserId(userId: number, res: any): Promise<void> {
+    try {
+      const userLikes = await LikeModel.find({ user_id: userId });
+
+      res.status(200).json(userLikes);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des likes de l'utilisateur :", error);
+      res.status(500).json({ error: "Une erreur s'est produite lors de la récupération des likes de l'utilisateur." });
+    }
+  }
+
+  async getLikesByArtisanId(artisanId: number, res: any): Promise<void> {
+    try {
+      const artisanLikes = await LikeModel.find({ artisant_id: artisanId });
+
+      res.status(200).json(artisanLikes);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des likes de l'artisan :", error);
+      res.status(500).json({ error: "Une erreur s'est produite lors de la récupération des likes de l'artisan." });
+    }
   }
 }
 
-export default { createLikeService, updateLikeService, deleteLikeService, getLikeDataService };
+export default new LikeService();
