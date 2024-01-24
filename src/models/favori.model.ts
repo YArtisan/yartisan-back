@@ -13,7 +13,7 @@ let favoriSchema = new mongoose.Schema({
     },
     id_prospect: {
         type: String,
-        require: true
+        required: true
     }
 })
 
