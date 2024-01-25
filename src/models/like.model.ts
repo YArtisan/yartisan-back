@@ -9,11 +9,11 @@ const likeSchema = new mongoose.Schema(
       primary: true,
     },
     user_id: {
-      type: Number,
+      type: String,
       required: true,
     },
     artisant_id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
