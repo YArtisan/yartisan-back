@@ -8,7 +8,7 @@ export default function (app: any) {
     likeController.createLikeController(req, res);
   });
 
-  app.delete("like/delete-like", jsonMiddleware, (req: any, res: any) => {
+  app.delete("/like/delete-like", jsonMiddleware, (req: any, res: any) => {
     likeController.deleteLikeController(req, res);
   });
 
