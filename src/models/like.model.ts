@@ -12,7 +12,7 @@ const likeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    artisant_id: {
+    artisan_id: {
       type: String,
       required: true,
     },
