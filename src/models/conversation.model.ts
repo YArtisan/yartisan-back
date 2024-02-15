@@ -11,11 +11,11 @@ let conversationSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    artisant_id:{
+    artisan_id:{
         type: String,
         require: true
     },
-    createdAt: {
+    created_at: {
         type: Date,
         require: true,
         default: Date.now()
@@ -27,4 +27,4 @@ let conversationSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.model('command', conversationSchema);
+export default mongoose.model('conversation', conversationSchema);

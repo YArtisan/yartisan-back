@@ -1,4 +1,4 @@
-import { NextFunction } from "express";
+import { NextFunction, Request } from "express";
 import { Response } from "express";
 import usersSchema from "../models/users.model.js";
 import { auth } from "../../main.js";
@@ -17,10 +17,32 @@ export const authMiddleware = async (
   }
   const decodedToken = await auth.verifyIdToken(idToken);
   const [user, artisan] = await Promise.all([
-    usersSchema.findOne({ email: decodedToken.email }),
-    artisantModel.findOne({ email: decodedToken.email }),
+    usersSchema.findOne({ email: decodedToken.email }).lean(),
+    artisantModel.findOne({ email: decodedToken.email }).lean(),
   ]);
 
-  req.user = user ?? artisan;
+  if (!!artisan) {
+    delete (artisan as any).password;
+    req.user = { ...artisan, userFunction: "artisan" };
+  } else if (!!user) {
+    delete (user as any).password;
+    req.user = { ...user, userFunction: "user" };
+  } else {
+    res.status(401).send({ status: false, message: "Not auth." });
+    return;
+  }
+
+  next();
+};
+
+export const showRequest = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  const strRequest = `${req.method} ${
+    req.originalUrl
+  } (${new Date().toISOString()})`;
+  console.log(strRequest);
   next();
 };

@@ -2,9 +2,12 @@ import artisanSchema from "./../models/artisant.model.js";
 import openingHoursModelSchema from "../models/opening_hours.model.js";
 import ratingSchema from "../models/rating.model.js";
 import addressSchema from "../models/address.model.js";
-import { artisantDto } from './../dto/artisant.dto.js'
+import { artisantDto } from "./../dto/artisant.dto.js";
 
-async function createArtisantService(request: artisantDto, res: any): Promise<void> {
+async function createArtisantService(
+  request: artisantDto,
+  res: any
+): Promise<void> {
   try {
     const emailFound = await artisanSchema.findOne({
       email: request.email,
@@ -15,7 +18,9 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     });
 
     if (emailFound || companyNameFound) {
-      res.status(400).json({ status: false, message: "This account already exists" });
+      res
+        .status(400)
+        .json({ status: false, message: "This account already exists" });
     } else {
       const newArtisant = new artisanSchema({
         email: request.email,
@@ -26,7 +31,7 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
         job_description: request.job_description,
         number_of_employees: request.number_of_employees,
         isVisible: request.isVisible,
-        average_price: request.average_price
+        average_price: request.average_price,
       });
 
       await newArtisant.save();
@@ -50,17 +55,21 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
             artisant_id: newArtisant._id,
             day_of_week: day.day_of_week,
             opening_time: day.opening_time,
-            closing_time: day.closing_time
+            closing_time: day.closing_time,
           });
 
-          await newOpeningHoursModel.save()
+          await newOpeningHoursModel.save();
         }
       }
 
       if (newArtisant) {
-        res.status(200).json({ status: true, message: "Artisant successfully creates" });
+        res
+          .status(200)
+          .json({ status: true, message: "Artisant successfully creates" });
       } else {
-        res.status(400).json({ status: false, message: "Cannot creates this artisant" });
+        res
+          .status(400)
+          .json({ status: false, message: "Cannot creates this artisant" });
       }
     }
   } catch (err) {
@@ -68,15 +77,20 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
   }
 }
 
-async function updateArtisantService(request: artisantDto, res: any): Promise<void> {
+async function updateArtisantService(
+  request: artisantDto,
+  res: any
+): Promise<void> {
   try {
     const artistantFound = await artisanSchema.findOne({
       _id: request.artisant_id,
     });
 
     if (!request.artisant_id) {
-      res.status(400).json({ status: false, message: "Artisan id is undefined" });
-      return
+      res
+        .status(400)
+        .json({ status: false, message: "Artisan id is undefined" });
+      return;
     }
 
     if (artistantFound) {
@@ -90,21 +104,33 @@ async function updateArtisantService(request: artisantDto, res: any): Promise<vo
         isVisible: request.isVisible,
       };
 
-      await artisanSchema.findOneAndUpdate({ _id: request.artisant_id }, updatedData);
-      res.status(200).json({ status: true, message: "Artisan successfully updated" });
+      await artisanSchema.findOneAndUpdate(
+        { _id: request.artisant_id },
+        updatedData
+      );
+      res
+        .status(200)
+        .json({ status: true, message: "Artisan successfully updated" });
     } else {
-      res.status(400).json({ status: false, message: "This artisant does not exist" });
+      res
+        .status(400)
+        .json({ status: false, message: "This artisant does not exist" });
     }
   } catch (error: any) {
     res.status(500).json({ status: false, message: error.message });
   }
 }
 
-async function deleteArtisantService(request: artisantDto, res: any): Promise<void> {
+async function deleteArtisantService(
+  request: artisantDto,
+  res: any
+): Promise<void> {
   try {
     if (!request.artisant_id) {
-      res.status(400).json({ status: false, message: "Artisan id is undefined" });
-      return
+      res
+        .status(400)
+        .json({ status: false, message: "Artisan id is undefined" });
+      return;
     }
 
     const artistantFound = await artisanSchema.findOne({
@@ -114,32 +140,32 @@ async function deleteArtisantService(request: artisantDto, res: any): Promise<vo
     if (artistantFound) {
       await artisanSchema.deleteOne({ _id: request.artisant_id });
     } else {
-      res.status(400).json({ status: false, message: "Artisant does not exist" });
-      return
+      res
+        .status(400)
+        .json({ status: false, message: "Artisant does not exist" });
+      return;
     }
 
-    res.status(200).json({ status: true, message: "Artisan delete with sucess" });
+    res
+      .status(200)
+      .json({ status: true, message: "Artisan delete with sucess" });
   } catch (error: any) {
     res.status(500).json({ status: false, message: error.message });
   }
 }
 
-async function getArtisantDataService(request: artisantDto, res: any): Promise<void> {
-  try {
-    const artisantData = await artisanSchema.findOne({ _id: request.artisant_id });
-    const artisantOpeningTime = await openingHoursModelSchema.find({ artisant_id: request.artisant_id })
-
-    if (!artisantData) {
-      res.status(400).json({ status: false, message: "Artisant not found" });
-      return;
-    }
-
-    const data = { artisantData, artisantOpeningTime }
-
-    res.status(200).json({ status: true, data: data });
-  } catch (error: any) {
-    res.status(500).json({ status: false, message: error.message });
-  }
+async function getArtisantDataService(
+  artisan_id: string
+): Promise<artisantDto> {
+  return new Promise((resolve, reject) => {
+    artisanSchema
+      .findOne({
+        _id: artisan_id,
+      })
+      .lean()
+      .then((e) => resolve(e as artisantDto))
+      .catch(reject);
+  });
 }
 
 async function getAllArtisansDataService(res: any): Promise<void> {
@@ -154,7 +180,9 @@ async function getAllArtisansDataService(res: any): Promise<void> {
     // Récupérer les données des horaires d'ouverture et des rating pour chaque artisan
     const artisansWithOpeningAndRating = await Promise.all(
       artisanData.map(async (artisan) => {
-        const openingHours = await openingHoursModelSchema.find({ artisant_id: artisan._id });
+        const openingHours = await openingHoursModelSchema.find({
+          artisant_id: artisan._id,
+        });
         const rating = await ratingSchema.find({ artisant_id: artisan._id });
         const address = await addressSchema.find({ _id: artisan.adress_id });
 
@@ -162,7 +190,7 @@ async function getAllArtisansDataService(res: any): Promise<void> {
           artisantData: artisan,
           opening_time: openingHours,
           ratings: rating,
-          address: address
+          address: address,
         };
       })
     );
@@ -173,5 +201,10 @@ async function getAllArtisansDataService(res: any): Promise<void> {
   }
 }
 
-
-export default { createArtisantService, updateArtisantService, deleteArtisantService, getArtisantDataService, getAllArtisansDataService };
+export default {
+  createArtisantService,
+  updateArtisantService,
+  deleteArtisantService,
+  getArtisantDataService,
+  getAllArtisansDataService,
+};

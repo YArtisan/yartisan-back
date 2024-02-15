@@ -31,4 +31,4 @@ let messageSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.model('command', messageSchema);
+export default mongoose.model('messages', messageSchema);

@@ -1,16 +1,34 @@
-import userService from "../service/user.service.js"
+import userService from "../service/user.service.js";
 
-function createUserController (request: any, res: any) {
-	userService.createUserService(request.body, res)
+function createUserController(request: any, res: any) {
+  userService.createUserService(request.body, res);
 }
-function updateUserController (request: any, res: any) {
-	userService.updateUserService(request.body, res)
+function updateUserController(request: any, res: any) {
+  userService.updateUserService(request.body, res);
 }
-function deleteUserController (request: any, res: any) {
-	userService.deleteUserService(request.body, res)
+function deleteUserController(request: any, res: any) {
+  userService.deleteUserService(request.body, res);
 }
-function getUserDataController (request: any, res: any) {
-	userService.getUserDataService(request.body, res)
+async function getUserDataController(request: any, res: any) {
+  try {
+    const userId = request.user_id;
+
+    const userData = await userService.getUserDataService(userId);
+
+    if (!userData) {
+      res.status(404).json({ status: false, message: "User not found" });
+      return;
+    }
+
+    res.status(200).json({ status: true, data: userData });
+  } catch (error: any) {
+    res.status(500).json({ status: false, message: error.message });
+  }
 }
 
-export default { createUserController, updateUserController, deleteUserController, getUserDataController }
+export default {
+  createUserController,
+  updateUserController,
+  deleteUserController,
+  getUserDataController,
+};

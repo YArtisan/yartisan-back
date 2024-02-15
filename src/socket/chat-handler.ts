@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import messageService from "../service/message.service";
 
 const messages: Record<string, any[]> = {};
 
@@ -7,29 +8,40 @@ const ChatHandler = (
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
 ) => {
-  const onConversationJoin = (conversationId: string) => {
+  const onConversationJoin = async (conversationId: string) => {
     socket.join(conversationId);
-    // TODO FETCH MESSAGES
-    socket.emit("conversation:joined", messages[conversationId] ?? []);
+    console.log("join", conversationId);
+    console.log(socket.rooms);
+
+    const messages = await messageService.getMessagesInConversation(
+      conversationId
+    );
+    socket.emit("conversation:joined", messages);
   };
 
-  const onMessageSend = (message: any) => {
-    const { conversationId } = message;
-    if (!socket.rooms.has(conversationId)) {
+  const onMessageSend = async (messageData: any) => {
+    console.log("message send");
+
+    const { conversation_id, expediteur_id, message } = messageData;
+    console.log(conversation_id);
+    console.log(socket.rooms);
+    console.log(io.sockets.adapter.rooms);
+
+    if (!io.sockets.adapter.rooms.get(conversation_id)) {
       return socket.emit("message:no-conversation-joined");
     }
 
-    const newMessage = {
-      ...message,
-      created_at: new Date(),
-      expediteur_id: socket.id,
-    };
+    console.log("pass");
 
-    // TODO : Replace push & Save message in BDD
-    if (!messages[conversationId]) messages[conversationId] = [];
-    messages[conversationId].push(newMessage);
-
-    io.in(conversationId).emit("message:added", newMessage);
+    messageService
+      .createMessage(conversation_id, expediteur_id, message)
+      .then((data) => {
+        delete data._v;
+        io.in(conversation_id).emit("message:added", data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   socket.on("conversation:join", onConversationJoin);
