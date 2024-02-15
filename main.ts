@@ -37,6 +37,13 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true,
+  })
+);
 
 const origin = process.env.ORIGIN?.includes(",")
   ? process.env.ORIGIN.split(",")
@@ -76,12 +83,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   ChatHandler(io, socket);
 });
-
-authenticationRoute(app);
-userRoute(app);
 ratingRoute(app);
 artisantRoute(app);
 conversationRoute(app);
+
+// Start the server
+server.listen(3000, () => console.log("Server started on port 3000"));
 
 // Start the server
 server.listen(3000, () => console.log("Server started on port 3000"));

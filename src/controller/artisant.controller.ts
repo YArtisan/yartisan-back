@@ -35,7 +35,7 @@ function getArtisanDataController(req: Request, res: Response) {
   }
 }
 
-function getAllArtisansDataController(req: any, res: any) {
+function getAllArtisansDataController(_req: any, res: any) {
   artisantService.getAllArtisansDataService(res);
 }
 
