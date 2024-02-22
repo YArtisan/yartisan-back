@@ -5,7 +5,7 @@ import ratingRoute from "./src/routes/rating.route.js";
 import artisantRoute from "./src/routes/artisant.route.js";
 import authenticationRoute from "./src/routes/oauth.route.js"
 import { config } from "dotenv";
-import { authMiddleware } from "./src/middleware/middleware.js";
+import { authMiddleware } from "./src/middleware/authMiddleware.js";
 import admin from 'firebase-admin'
 import serviceAccount from './service-account.json' assert { type: "json" }
 import cors from 'cors'

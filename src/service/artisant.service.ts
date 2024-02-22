@@ -19,7 +19,7 @@ async function createArtisantService(request: artisantDto, res: any): Promise<vo
     } else {
       const newArtisant = new artisanSchema({
         email: request.email,
-        password: request.password,
+        password: request.password ?? 'empty',
         company_name: request.company_name,
         phone_number: request.phone_number,
         profile_picture: request.profile_picture,
