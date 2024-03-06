@@ -27,24 +27,6 @@ config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ajouter des en-têtes CORS à toutes les requêtes
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
-app.use(
-  cors({
-    origin: process.env.ORIGIN,
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true,
-  })
-);
-
 const origin = process.env.ORIGIN?.includes(",")
   ? process.env.ORIGIN.split(",")
   : process.env.ORIGIN;
@@ -52,7 +34,7 @@ const origin = process.env.ORIGIN?.includes(",")
 app.use(
   cors({
     origin,
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
   })
 );
@@ -86,12 +68,12 @@ io.on("connection", (socket) => {
 ratingRoute(app);
 artisantRoute(app);
 conversationRoute(app);
+authenticationRoute(app);
+userRoute(app);
 
 // Start the server
-server.listen(3000, () => console.log("Server started on port 3000"));
-
-// Start the server
-server.listen(3000, () => console.log("Server started on port 3000"));
+const port = process.env.PORT || 3000;
+server.listen(port, () => console.log("Server started on port " + port));
 
 // Export the Express API
 export default app;
