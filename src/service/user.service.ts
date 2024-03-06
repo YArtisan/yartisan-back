@@ -1,18 +1,34 @@
 import usersSchema from "../models/users.model.js";
 import { usersDto } from "../dto/users.dto.js";
+import Stripe from "stripe";
 
-async function createUserService (request: usersDto, res: any): Promise<void> {
+async function createUserService (request: usersDto, res: any, stripe: Stripe): Promise<void> {
+  // Check env
+  if (!process.env.STRIPE_KEY_TEST) {
+    res.status(400).send({ "message": "Erreur 400 : Stripe API Key Error" });
+    return;
+  }
+
   const emailFound = await usersSchema.findOne({ email: request.email })
 
   if (emailFound) {
     res.status(400).json({ status: false, message: "This email already exist" });
   } else {
+    const customer = await stripe.customers.create({
+      name: request.email?.split('@')[0],
+      email: request.email,
+      description: "FireSnap User"
+    });
+
+    const customerId = customer.id;
+    
     const newUser = new usersSchema({
       firstname: request.firstname,
       lastname: request.lastname,
       password: request.password,
       email: request.email,
-      phone_number: request.phone_number
+      phone_number: request.phone_number,
+      stripeId: customerId
     });
 
     await newUser.save();

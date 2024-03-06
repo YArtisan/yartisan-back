@@ -28,6 +28,10 @@ let usersSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    stripeId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
