@@ -12,7 +12,7 @@ async function createUserService (request: usersDto, res: any): Promise<void> {
     const newUser = new usersSchema({
       firstname: request.firstname,
       lastname: request.lastname,
-      password: request.password,
+      password: request.password ?? 'empty',
       email: request.email,
       phone_number: request.phone_number,
     });

@@ -32,20 +32,5 @@ export const authMiddleware = async (
     return;
   }
 
-  console.log(req.user);
-  
-
-  next();
-};
-
-export const showRequest = (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
-  const strRequest = `${req.method} ${
-    req.originalUrl
-  } (${new Date().toISOString()})`;
-  console.log(strRequest);
   next();
 };
