@@ -1,7 +1,7 @@
-import ordersSchema from "../models/order.model"
+import ordersSchema from "../models/order.model.js"
 import usersSchema from "../models/users.model.js";
 import express, { Request, Response } from "express";
-import { orderDto } from "../dto/order.dto";
+import { orderDto } from "../dto/order.dto.js";
 
 
 async function createOrder(req: orderDto, res: Response) {

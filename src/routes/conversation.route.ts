@@ -1,5 +1,5 @@
 import express from "express";
-import conversationController from "../controller/conversation.controller";
+import conversationController from "../controller/conversation.controller.js";
 
 export default function (app: any) {
   app.post("/chat", (req: any, res: any) => {

@@ -1,5 +1,5 @@
 import { Stripe } from "stripe";
-import { StripeCheckoutDto } from "../dto/stripe.dto";
+import { StripeCheckoutDto } from "../dto/stripe.dto.js";
 
 async function createCheckoutSessionController(request: StripeCheckoutDto, res: any, stripe: Stripe) {
   try {

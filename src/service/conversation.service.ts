@@ -1,5 +1,5 @@
-import conversationSchema from "../models/conversation.model";
-import { conversationDto } from "../dto/conversation.dto";
+import conversationSchema from "../models/conversation.model.js";
+import { conversationDto } from "../dto/conversation.dto.js";
 
 async function createConversation(
   userId: string,

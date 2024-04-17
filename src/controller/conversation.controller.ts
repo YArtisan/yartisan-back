@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import conversationService from "../service/conversation.service";
-import messageModel from "../models/message.model";
-import messageService from "../service/message.service";
-import artisantService from "../service/artisant.service";
-import userService from "../service/user.service";
+import conversationService from "../service/conversation.service.js";
+import messageModel from "../models/message.model.js";
+import messageService from "../service/message.service.js";
+import artisantService from "../service/artisant.service.js";
+import userService from "../service/user.service.js";
 
 async function createConversation(req: Request, res: Response) {
   try {

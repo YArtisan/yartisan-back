@@ -1,5 +1,5 @@
-import messageSchema from "../models/message.model";
-import { messageDto } from "../dto/message.dto";
+import messageSchema from "../models/message.model.js";
+import { messageDto } from "../dto/message.dto.js";
 
 async function createMessage(
   conversation_id: string,

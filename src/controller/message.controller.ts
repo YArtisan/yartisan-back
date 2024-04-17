@@ -1,4 +1,4 @@
-import messageService from "../service/message.service";
+import messageService from "../service/message.service.js";
 
 async function createMessage(req: any, res: any) {
   try {
