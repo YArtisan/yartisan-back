@@ -49,10 +49,12 @@ const origin = process.env.ORIGIN?.includes(",")
   ? process.env.ORIGIN.split(",")
   : process.env.ORIGIN;
 
+console.log("origin", origin)
+
 app.use(
   cors({
     origin,
-    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
     credentials: true,
   })
 );
