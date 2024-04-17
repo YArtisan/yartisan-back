@@ -9,7 +9,6 @@ import { config } from "dotenv";
 import { authMiddleware } from "./src/middleware/authMiddleware.js";
 import { showRequest } from "./src/middleware/showRequestMiddleware.js";
 import admin from "firebase-admin";
-import serviceAccount from "./service-account.json" assert { type: "json" };
 import cors from "cors";
 import { Server } from "socket.io";
 import Stripe from 'stripe'
@@ -19,8 +18,14 @@ import conversationRoute from "./src/routes/conversation.route.js";
 
 const app = express();
 
+const adminCred: admin.ServiceAccount = {
+  projectId: process.env.project_id,
+  privateKey: process.env.private_key,
+  clientEmail: process.env.client_email,
+}
+
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+  credential: admin.credential.cert(adminCred),
 });
 
 export const auth = admin.auth();
