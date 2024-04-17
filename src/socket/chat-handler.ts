@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import messageService from "../service/message.service";
+import messageService from "../service/message.service.js";
 
 const messages: Record<string, any[]> = {};
 
