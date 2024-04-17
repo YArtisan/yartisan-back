@@ -1,11 +1,12 @@
 import express from "express";
 import userController from "./../controller/user.controller.js";
+import Stripe from "stripe";
 
-export default function (app: any) {
+export default function (app: any, stripe: Stripe) {
 	const jsonMiddleware = express.json();
 
 	app.post("/users/signup", jsonMiddleware, (req: any, res: any) => {
-		userController.createUserController(req, res);
+		userController.createUserController(req, res, stripe);
 	});
 
 	app.post("/users/update", jsonMiddleware, (req: any, res: any) => {

@@ -30,10 +30,7 @@ async function createUserService (request: usersDto, res: any, stripe: Stripe): 
       password: request.password ?? 'empty',
       email: request.email,
       phone_number: request.phone_number,
-<<<<<<< HEAD
       stripeId: customerId
-=======
->>>>>>> dev
     });
 
     await newUser.save();

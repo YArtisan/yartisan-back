@@ -4,6 +4,7 @@ import userRoute from "./src/routes/users.route.js";
 import ratingRoute from "./src/routes/rating.route.js";
 import artisantRoute from "./src/routes/artisant.route.js";
 import authenticationRoute from "./src/routes/oauth.route.js";
+import stripeRoute from "./src/routes/stripe.route.js";
 import { config } from "dotenv";
 import { authMiddleware } from "./src/middleware/authMiddleware.js";
 import { showRequest } from "./src/middleware/showRequestMiddleware.js";
@@ -11,6 +12,7 @@ import admin from "firebase-admin";
 import serviceAccount from "./service-account.json" assert { type: "json" };
 import cors from "cors";
 import { Server } from "socket.io";
+import Stripe from 'stripe'
 import http from "http";
 import ChatHandler from "./src/socket/chat-handler.js";
 import conversationRoute from "./src/routes/conversation.route.js";
@@ -56,6 +58,10 @@ connect(mongo_uri, {
 app.use(showRequest);
 app.use(authMiddleware);
 
+const stripe = new Stripe(process.env.STRIPE_KEY!, {
+  apiVersion: "2023-10-16",
+});
+
 export const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -66,11 +72,13 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   ChatHandler(io, socket);
 });
+
 ratingRoute(app);
 artisantRoute(app);
 conversationRoute(app);
 authenticationRoute(app);
-userRoute(app);
+userRoute(app, stripe);
+stripeRoute(app, stripe)
 
 // Start the server
 const port = process.env.PORT || 3000;
