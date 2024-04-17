@@ -9,7 +9,8 @@
 	},
 	"scripts": {
 		"build": "tsc&&cp ./service-account.json ./dist/src/service-account.json",
-		"start": "node ./dist/main.js",
+		"vercel-build": "echo hello",
+		"start": "node ./api/main.js",
 		"dev": "nodemon main.ts"
 	},
 	"repository": {
