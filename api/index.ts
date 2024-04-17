@@ -59,10 +59,10 @@ app.use(
   })
 );
 
-const mongo_uri = process.env.MONGODB_URL;
+const mongo_uri = process.env.MONGODB_URI;
 
 if (!mongo_uri) {
-  throw new Error("La variable d'environnement MONGODB_URL n'est pas définie.");
+  throw new Error("La variable d'environnement MONGODB_URI n'est pas définie.");
 }
 
 // Connect to mongoDb
