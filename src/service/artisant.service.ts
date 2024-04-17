@@ -197,6 +197,7 @@ async function getAllArtisansDataService(res: any): Promise<void> {
 
     res.status(200).json({ status: true, data: artisansWithOpeningAndRating });
   } catch (error: any) {
+    console.log("error", error)
     res.status(500).json({ status: false, message: error.message });
   }
 }
