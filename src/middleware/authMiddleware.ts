@@ -1,7 +1,7 @@
 import { NextFunction, Request } from "express";
 import { Response } from "express";
 import usersSchema from "../models/users.model.js";
-import { auth } from "../../api/main.js";
+import { auth } from "../../api/index.js";
 import artisantModel from "../models/artisant.model.js";
 
 export const authMiddleware = async (
