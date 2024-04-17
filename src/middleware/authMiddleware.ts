@@ -33,9 +33,6 @@ export const authMiddleware = async (
     delete (user as any).password;
     console.log("user",artisan)
     req.user = { ...user, userFunction: "user" };
-  } else {
-    res.status(401).send({ status: false, message: "Not auth." });
-    return;
   }
 
   next();
