@@ -1,20 +1,20 @@
 import express from "express";
 import { connect } from "mongoose";
-import userRoute from "./src/routes/users.route.js";
-import ratingRoute from "./src/routes/rating.route.js";
-import artisantRoute from "./src/routes/artisant.route.js";
-import authenticationRoute from "./src/routes/oauth.route.js";
-import stripeRoute from "./src/routes/stripe.route.js";
+import userRoute from "../src/routes/users.route.js";
+import ratingRoute from "../src/routes/rating.route.js";
+import artisantRoute from "../src/routes/artisant.route.js";
+import authenticationRoute from "../src/routes/oauth.route.js";
+import stripeRoute from "../src/routes/stripe.route.js";
 import { config } from "dotenv";
-import { authMiddleware } from "./src/middleware/authMiddleware.js";
-import { showRequest } from "./src/middleware/showRequestMiddleware.js";
+import { authMiddleware } from "../src/middleware/authMiddleware.js";
+import { showRequest } from "../src/middleware/showRequestMiddleware.js";
 import admin from "firebase-admin";
 import cors from "cors";
 import { Server } from "socket.io";
 import Stripe from 'stripe'
 import http from "http";
-import ChatHandler from "./src/socket/chat-handler.js";
-import conversationRoute from "./src/routes/conversation.route.js";
+import ChatHandler from "../src/socket/chat-handler.js";
+import conversationRoute from "../src/routes/conversation.route.js";
 
 const app = express();
 
