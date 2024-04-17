@@ -2,14 +2,18 @@ import usersSchema from "../models/users.model.js";
 import { usersDto } from "../dto/users.dto.js";
 import Stripe from "stripe";
 
-async function createUserService (request: usersDto, res: any, stripe: Stripe): Promise<void> {
+async function createUserService(
+  request: usersDto,
+  res: any,
+  stripe: Stripe
+): Promise<void> {
   // Check env
-  if (!process.env.STRIPE_KEY_TEST) {
-    res.status(400).send({ "message": "Erreur 400 : Stripe API Key Error" });
+  if (!process.env.STRIPE_KEY) {
+    res.status(400).send({ message: "Erreur 400 : Stripe API Key Error" });
     return;
   }
 
-  const emailFound = await usersSchema.findOne({ email: request.email })
+  const emailFound = await usersSchema.findOne({ email: request.email });
 
   if (emailFound) {
     res
@@ -17,20 +21,19 @@ async function createUserService (request: usersDto, res: any, stripe: Stripe): 
       .json({ status: false, message: "This email already exist" });
   } else {
     const customer = await stripe.customers.create({
-      name: request.email?.split('@')[0],
+      name: request.email?.split("@")[0],
       email: request.email,
-      description: "FireSnap User"
     });
 
     const customerId = customer.id;
-    
+
     const newUser = new usersSchema({
       firstname: request.firstname,
       lastname: request.lastname,
-      password: request.password ?? 'empty',
+      password: request.password ?? "empty",
       email: request.email,
       phone_number: request.phone_number,
-      stripeId: customerId
+      stripeId: customerId,
     });
 
     await newUser.save();
@@ -42,7 +45,7 @@ async function createUserService (request: usersDto, res: any, stripe: Stripe): 
   }
 }
 
-async function updateUserService (request: usersDto, res: any): Promise<void> {
+async function updateUserService(request: usersDto, res: any): Promise<void> {
   try {
     const updatedData = {
       firstname: request.firstname,
@@ -62,7 +65,7 @@ async function updateUserService (request: usersDto, res: any): Promise<void> {
   }
 }
 
-async function deleteUserService (request: usersDto, res: any): Promise<void> {
+async function deleteUserService(request: usersDto, res: any): Promise<void> {
   try {
     const userId = request.user_id;
 
