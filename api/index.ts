@@ -1,3 +1,4 @@
+import "dotenv/config.js";
 import express from "express";
 import { connect } from "mongoose";
 import userRoute from "../src/routes/users.route.js";
@@ -5,7 +6,6 @@ import ratingRoute from "../src/routes/rating.route.js";
 import artisantRoute from "../src/routes/artisant.route.js";
 import authenticationRoute from "../src/routes/oauth.route.js";
 import stripeRoute from "../src/routes/stripe.route.js";
-import { config } from "dotenv";
 import { authMiddleware } from "../src/middleware/authMiddleware.js";
 import { showRequest } from "../src/middleware/showRequestMiddleware.js";
 import admin from "firebase-admin";
@@ -40,16 +40,12 @@ admin.initializeApp({
 
 export const auth = admin.auth();
 
-config();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const origin = process.env.ORIGIN?.includes(",")
   ? process.env.ORIGIN.split(",")
   : process.env.ORIGIN;
-
-console.log("origin", origin)
 
 app.use(
   cors({

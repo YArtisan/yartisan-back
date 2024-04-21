@@ -15,9 +15,7 @@ export const authMiddleware = async (
     next();
     return;
   }
-  console.log("id token", idToken);
   const decodedToken = await auth.verifyIdToken(idToken);
-  console.log("decoded token", decodedToken);
   
   const [user, artisan] = await Promise.all([
     usersSchema.findOne({ email: decodedToken.email }).lean(),
@@ -27,11 +25,9 @@ export const authMiddleware = async (
   
   if (!!artisan) {
     delete (artisan as any).password;
-    console.log("artisan",artisan)
     req.user = { ...artisan, userFunction: "artisan" };
   } else if (!!user) {
     delete (user as any).password;
-    console.log("user",artisan)
     req.user = { ...user, userFunction: "user" };
   }
 

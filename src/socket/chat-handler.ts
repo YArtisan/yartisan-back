@@ -10,8 +10,6 @@ const ChatHandler = (
 ) => {
   const onConversationJoin = async (conversationId: string) => {
     socket.join(conversationId);
-    console.log("join", conversationId);
-    console.log(socket.rooms);
 
     const messages = await messageService.getMessagesInConversation(
       conversationId
@@ -20,18 +18,11 @@ const ChatHandler = (
   };
 
   const onMessageSend = async (messageData: any) => {
-    console.log("message send");
-
     const { conversation_id, expediteur_id, message } = messageData;
-    console.log(conversation_id);
-    console.log(socket.rooms);
-    console.log(io.sockets.adapter.rooms);
 
     if (!io.sockets.adapter.rooms.get(conversation_id)) {
       return socket.emit("message:no-conversation-joined");
     }
-
-    console.log("pass");
 
     messageService
       .createMessage(conversation_id, expediteur_id, message)

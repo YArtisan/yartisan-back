@@ -10,8 +10,8 @@
 	"scripts": {
 		"build": "tsc&&cp ./service-account.json ./dist/src/service-account.json",
 		"vercel-build": "echo test",
-		"start": "node ./api/main.js",
-		"dev": "nodemon main.ts"
+		"start": "node ./api/index.js",
+		"dev": "nodemon ./api/index.ts"
 	},
 	"repository": {
 		"type": "git",
