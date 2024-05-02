@@ -2,8 +2,8 @@ import messageService from "../service/message.service.js";
 
 async function createMessage(req: any, res: any) {
   try {
-    const { conversation_id, expediteur_id, message } = req.body;
-    await messageService.createMessage(conversation_id, expediteur_id, message);
+    const { conversation_id, expediteur_id, message, url } = req.body;
+    await messageService.createMessage({ conversation_id, expediteur_id, message, url });
 
     res
       .status(200)

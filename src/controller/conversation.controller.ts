@@ -46,7 +46,7 @@ async function getAllConversations(req: any, res: any) {
       const artisan = await artisantService.getArtisantDataService(
         c.artisan_id
       );
-      const user = await userService.getUserDataService(c.user_id);
+      const user = await userService.getUserDataService(c.user_id);      
 
       completeConversations.push({ ...c, lastMessage, artisan, user });
     }

@@ -1,19 +1,28 @@
 import { Stripe } from "stripe";
 import { StripeCheckoutDto } from "../dto/stripe.dto.js";
+import { Request } from "express";
 
-async function createCheckoutSessionController(request: StripeCheckoutDto, res: any, stripe: Stripe) {
+async function createCheckoutSessionController(
+  request: Request,
+  res: any,
+  stripe: Stripe
+) {
+  const { body }: { body: StripeCheckoutDto } = request; 
+  console.log("body", body);
+  
+  
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
-            currency: "usd",
+            currency: "eur",
             product_data: {
-              name: request.productName,
-              description: request.productDescription
+              name: body.productName,
+              description: body.productDescription,
             },
-            unit_amount: request.productPrice,
+            unit_amount: body.productPrice,
           },
           quantity: 1,
         },
@@ -25,10 +34,15 @@ async function createCheckoutSessionController(request: StripeCheckoutDto, res: 
 
     const paymentUrl = `https://checkout.stripe.com/pay/${session.id}`;
 
-    res.json({ paymentUrl: paymentUrl });
+    res.json({ paymentUrl: session.url });
+    // res.json({ paymentUrl: " " });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Une erreur est survenue lors de la création de la session de paiement." });
+    res.status(500).json({
+      message:
+        "Une erreur est survenue lors de la création de la session de paiement.",
+      error,
+    });
   }
 }
 

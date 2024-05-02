@@ -5,7 +5,7 @@ import Stripe from "stripe";
 export default function (app: any, stripe: Stripe) {
   const jsonMiddleware = express.json();
 
-  app.post('/create-checkout-session', jsonMiddleware, (req: any, res: any, stripe: Stripe) => {
+  app.post('/create-checkout-session', jsonMiddleware, (req: any, res: any) => {
     stripeController.createCheckoutSessionController(req, res, stripe)
   })
 

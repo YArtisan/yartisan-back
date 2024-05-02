@@ -1,18 +1,10 @@
 import messageSchema from "../models/message.model.js";
 import { messageDto } from "../dto/message.dto.js";
 
-async function createMessage(
-  conversation_id: string,
-  expediteur_id: string,
-  message: string
-) {
+async function createMessage(data: Partial<messageDto>) {
   return new Promise<any>((resolve, reject) => {
     const newMessage = new messageSchema({
-      conversation_id,
-      expediteur_id,
-      message,
-      createdAt: Date.now(),
-      last_update: Date.now(),
+      ...data,
     });
 
     newMessage.save().then(resolve).catch(reject);

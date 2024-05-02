@@ -18,14 +18,14 @@ const ChatHandler = (
   };
 
   const onMessageSend = async (messageData: any) => {
-    const { conversation_id, expediteur_id, message } = messageData;
+    const { conversation_id, expediteur_id, message, url } = messageData;
 
     if (!io.sockets.adapter.rooms.get(conversation_id)) {
       return socket.emit("message:no-conversation-joined");
     }
 
     messageService
-      .createMessage(conversation_id, expediteur_id, message)
+      .createMessage({ conversation_id, expediteur_id, message, url })
       .then((data) => {
         delete data._v;
         io.in(conversation_id).emit("message:added", data);

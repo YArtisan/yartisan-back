@@ -5,6 +5,7 @@ interface messageDto {
   message: String;
   created_at: Date;
   last_update: Date;
+  url?: string;
 }
 
 export { messageDto };

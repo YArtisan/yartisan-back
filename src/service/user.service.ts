@@ -82,7 +82,7 @@ async function deleteUserService(request: usersDto, res: any): Promise<void> {
 async function getUserDataService(userId: string): Promise<usersDto> {
   return new Promise((resolve, reject) => {
     usersSchema
-      .findOne({ id: userId })
+      .findOne({ _id: userId })
       .lean()
       .then((e) => resolve(e as usersDto))
       .catch(reject);
