@@ -3,7 +3,7 @@
     "sourceMap": true,
     "target": "ES2022",
     "module": "esnext",
-    "outDir": "./dist",
+    "outDir": "./build",
     "rootDir": "./",
     "baseUrl": "./dist",
     "esModuleInterop": true,
