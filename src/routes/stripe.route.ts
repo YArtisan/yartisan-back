@@ -21,11 +21,13 @@ export default function (app: any, stripe: Stripe) {
       let event;
       console.log("body", req.rawBody);
 
+      if(!process.env.STRIPE_WEBHOOK_SECRET) return res.status(500).send("No webhook secret.")
+      
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,
           sig,
-          "whsec_c26d060a403ba3630ba47eb013980fbfacb94a44ff5efd588b54f7e634c4653b"
+          process.env.STRIPE_WEBHOOK_SECRET
         );
       } catch (err: any) {
         console.log("Erreur de signature du webhook :", err);
