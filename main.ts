@@ -1,5 +1,5 @@
 import "dotenv/config.js";
-import express from "express";
+import express, { Request } from "express";
 import { connect } from "mongoose";
 import userRoute from "./src/routes/users.route.js";
 import ratingRoute from "./src/routes/rating.route.js";
@@ -11,36 +11,51 @@ import { showRequest } from "./src/middleware/showRequestMiddleware.js";
 import admin from "firebase-admin";
 import cors from "cors";
 import { Server } from "socket.io";
-import Stripe from 'stripe'
+import Stripe from "stripe";
 import http from "http";
 import ChatHandler from "./src/socket/chat-handler.js";
 import conversationRoute from "./src/routes/conversation.route.js";
+import orderRoute from "./src/routes/order.route.js";
 
 const app = express();
 
-const adminCred =
-{
-  "type": "service_account",
-  "project_id": process.env.FIREBASE_PROJECT_ID,
-  "private_key_id": process.env.FIREBASE_KEY_ID,
-  "private_key": process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : undefined,
-  "client_email": process.env.FIREBASE_CLIENT_EMAIL,
-  "client_id": process.env.FIREBASE_CLIENT_ID,
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": process.env.FIREBASE_CERT_URL,
-  "universe_domain": "googleapis.com"
-}
-
+const adminCred = {
+  type: "service_account",
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key_id: process.env.FIREBASE_KEY_ID,
+  private_key: process.env.FIREBASE_PRIVATE_KEY
+    ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+    : undefined,
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+  client_id: process.env.FIREBASE_CLIENT_ID,
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url: process.env.FIREBASE_CERT_URL,
+  universe_domain: "googleapis.com",
+};
 
 admin.initializeApp({
   credential: admin.credential.cert(adminCred as admin.ServiceAccount),
 });
 
-export const auth = admin.auth();
+export const auth = (token: string) => {
+  return new Promise<any>((resolve, reject) => {
+    admin.auth().verifyIdToken(token).then(resolve).catch(reject);
+  });
+};
 
-app.use(express.json());
+app.use(
+  express.json({
+    verify: function (req : Request, res, buf) {
+      var url = req.originalUrl;
+      if (url.startsWith("/webhook")) {
+        // @ts-ignore
+        req.rawBody = buf.toString();
+      }
+    },
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 
 const origin = process.env.ORIGIN?.includes(",")
@@ -91,7 +106,8 @@ artisantRoute(app);
 conversationRoute(app);
 authenticationRoute(app);
 userRoute(app, stripe);
-stripeRoute(app, stripe)
+stripeRoute(app, stripe);
+orderRoute(app);
 
 // Start the server
 const port = process.env.PORT || 3000;

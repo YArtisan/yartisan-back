@@ -1,16 +1,14 @@
 import { Stripe } from "stripe";
-import { StripeCheckoutDto } from "../dto/stripe.dto.js";
 import { Request } from "express";
+import orderService from "../service/order.service.js";
 
 async function createCheckoutSessionController(
   request: Request,
   res: any,
   stripe: Stripe
 ) {
-  const { body }: { body: StripeCheckoutDto } = request; 
-  console.log("body", body);
-  
-  
+  const { body } = request;
+  const { name, description, price, user_id, artisan_id } = body;
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -19,10 +17,10 @@ async function createCheckoutSessionController(
           price_data: {
             currency: "eur",
             product_data: {
-              name: body.productName,
-              description: body.productDescription,
+              name,
+              description,
             },
-            unit_amount: body.productPrice,
+            unit_amount: price,
           },
           quantity: 1,
         },
@@ -32,10 +30,18 @@ async function createCheckoutSessionController(
       cancel_url: "https://yartisan.netlify.app",
     });
 
-    const paymentUrl = `https://checkout.stripe.com/pay/${session.id}`;
+    await orderService.createOrder({
+      user_id,
+      artisan_id,
+      title: name,
+      description,
+      price: price / 100,
+      url: session.url ?? undefined,
+      stripeId: session.id,
+      status: "waiting",
+    });
 
     res.json({ paymentUrl: session.url });
-    // res.json({ paymentUrl: " " });
   } catch (error) {
     console.error(error);
     res.status(500).json({

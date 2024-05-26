@@ -3,6 +3,7 @@ import openingHoursModelSchema from "../models/opening_hours.model.js";
 import ratingSchema from "../models/rating.model.js";
 import addressSchema from "../models/address.model.js";
 import { artisantDto } from "./../dto/artisant.dto.js";
+import usersModel from "../models/users.model.js";
 
 async function createArtisantService(
   request: artisantDto,
@@ -24,7 +25,7 @@ async function createArtisantService(
     } else {
       const newArtisant = new artisanSchema({
         email: request.email,
-        password: request.password ?? 'empty',
+        password: request.password ?? "empty",
         company_name: request.company_name,
         phone_number: request.phone_number,
         profile_picture: request.profile_picture,
@@ -183,13 +184,22 @@ async function getAllArtisansDataService(res: any): Promise<void> {
         const openingHours = await openingHoursModelSchema.find({
           artisant_id: artisan._id,
         });
-        const rating = await ratingSchema.find({ artisant_id: artisan._id });
+        const ratings = await ratingSchema.find({ artisant_id: artisan._id });
+        const ratingsWithUser = await Promise.all(
+          ratings.map(async (rating) => {
+            const user = await usersModel.findById(rating.user_id);
+            return {
+              ...rating.toObject(),
+              user: { firstName: user?.firstname, lastname: user?.lastname },
+            };
+          })
+        );
         const address = await addressSchema.find({ _id: artisan.adress_id });
 
         return {
           artisantData: artisan,
           opening_time: openingHours,
-          ratings: rating,
+          ratings: ratingsWithUser,
           address: address,
         };
       })
@@ -197,7 +207,7 @@ async function getAllArtisansDataService(res: any): Promise<void> {
 
     res.status(200).json({ status: true, data: artisansWithOpeningAndRating });
   } catch (error: any) {
-    console.log("error", error)
+    console.log("error", error);
     res.status(500).json({ status: false, message: error.message });
   }
 }
