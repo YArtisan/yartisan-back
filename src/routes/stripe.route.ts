@@ -16,13 +16,11 @@ export default function (app: any, stripe: Stripe) {
     async (req: any, res: any) => {
       // Vérifiez la signature du webhook
       const sig = req.headers["stripe-signature"];
-      console.log("signature", sig);
-
       let event;
-      console.log("body", req.rawBody);
 
-      if(!process.env.STRIPE_WEBHOOK_SECRET) return res.status(500).send("No webhook secret.")
-      
+      if (!process.env.STRIPE_WEBHOOK_SECRET)
+        return res.status(500).send("No webhook secret.");
+
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,
