@@ -1,4 +1,4 @@
-import ordersController from "../controller/orders.controller";
+import ordersController from "../controller/orders.controller.js";
 
 export default function (app: any) {
   app.post("/order/create", (req: any, res: any) => {
