@@ -23,16 +23,6 @@ let messageSchema = new mongoose.Schema(
     url: {
       type: String,
     },
-    createdAt: {
-      type: Date,
-      require: true,
-      default: Date.now(),
-    },
-    last_update: {
-      type: Date,
-      require: true,
-      default: Date.now(),
-    },
   },
   { timestamps: true }
 );
