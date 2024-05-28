@@ -26,8 +26,8 @@ async function createCheckoutSessionController(
         },
       ],
       mode: "payment",
-      success_url: "https://yartisan.netlify.app",
-      cancel_url: "https://yartisan.netlify.app",
+      success_url: "https://yartisanfr.netlify.app/dashboard",
+      cancel_url: "https://yartisanfr.netlify.app/dashboard",
     });
 
     await orderService.createOrder({
