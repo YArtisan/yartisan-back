@@ -12,7 +12,7 @@ interface artisantDto {
   number_of_employees?: Number;
   isVisible?: Boolean;
   opening_hours?: openingHoursDto[];
-  address?: addressDto;
+  adress_id?: string;
 }
 
 interface openingHoursDto {
@@ -31,4 +31,4 @@ interface addressDto {
   lon: string;
 }
 
-export { artisantDto };
+export { artisantDto , addressDto};

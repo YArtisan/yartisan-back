@@ -2,11 +2,11 @@ import artisanSchema from "./../models/artisant.model.js";
 import openingHoursModelSchema from "../models/opening_hours.model.js";
 import ratingSchema from "../models/rating.model.js";
 import addressSchema from "../models/address.model.js";
-import { artisantDto } from "./../dto/artisant.dto.js";
+import { addressDto, artisantDto } from "./../dto/artisant.dto.js";
 import usersModel from "../models/users.model.js";
 
 async function createArtisantService(
-  request: artisantDto,
+  request: artisantDto & { address: addressDto },
   res: any
 ): Promise<void> {
   try {
